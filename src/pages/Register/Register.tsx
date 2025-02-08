@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
-import LogoutButton from "../../components/LogoutButton";
 
 interface FormData {
   email: string;
@@ -101,7 +100,7 @@ const Register: React.FC = () => {
         const response = await registerUser(
           formData.email,
           formData.password1,
-          formData.password2
+          formData.password2,
         );
         setSuccessMessage(response.detail);
         setErrorMessage(null);
@@ -167,7 +166,6 @@ const Register: React.FC = () => {
           sign up
         </Button>
         <GoogleLoginButton onSuccess={() => navigate("/")} />
-        <LogoutButton />
         {successMessage && <Alert severity="success">{successMessage}</Alert>}
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       </Card>

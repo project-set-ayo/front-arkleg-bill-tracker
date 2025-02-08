@@ -7,7 +7,9 @@ import { RouterProvider } from "react-router";
 import theme from "./theme";
 import { ThemeProvider } from "@mui/material";
 
-const googleClientId: string = import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID;
+const googleClientId: string =
+  import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID ||
+  "590498199316-a1hr4d0ens62ten0m5nlf1co9e6np9pf.apps.googleusercontent.com";
 
 createRoot(document.getElementById("root")!).render(
   <GoogleOAuthProvider clientId={googleClientId}>
@@ -16,5 +18,5 @@ createRoot(document.getElementById("root")!).render(
         <RouterProvider router={router} />
       </ThemeProvider>
     </StrictMode>
-  </GoogleOAuthProvider>
+  </GoogleOAuthProvider>,
 );
