@@ -14,16 +14,6 @@ jobs:
        with: 
         ref: main
         
-     # - name: rsync deployments
-     #   uses: burnett01/rsync-deployments@5.2
-     #   with:
-     #      switches: -avzr
-     #      path: ./*
-     #      remote_path: ${{ secrets.REMOTE_PATH }}
-     #      remote_host: ${{ secrets.SSH_HOST }} 
-     #      remote_port: ${{ secrets.SSH_PORT }} 
-     #      remote_user: ${{ secrets.SSH_USER }} 
-     #      remote_key: ${{ secrets.SECRET_KEY }}
           
      - name: Build npm & Restart nginx
        uses: fifsky/ssh-action@master
