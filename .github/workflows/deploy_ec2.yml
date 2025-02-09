@@ -29,7 +29,14 @@ jobs:
        with:
          hosts: ${{ secrets.SSH_HOST }}
          privateKey: ${{ secrets.SECRET_KEY }}
-         command: cd ${{ secrets.REMOTE_PATH }} || exit 1 && git fetch --all && git reset --hard origin/main && git clean -df && npm install --legacy-peer-deps && npm run build && sudo systemctl restart nginx 
+         command: |
+            cd ${{ secrets.REMOTE_PATH }} || exit 1 
+            git fetch --all 
+            git reset --hard origin/main
+            git clean -df 
+            npm install  
+            npm run build 
+            sudo systemctl restart nginx 
 
      # - name: Deploy with SSH
      #   uses: fifsky/ssh-action@master
