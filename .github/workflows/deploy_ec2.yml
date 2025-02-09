@@ -14,16 +14,16 @@ jobs:
        with: 
         ref: main
         
-     - name: rsync deployments
-       uses: burnett01/rsync-deployments@5.2
-       with:
-          switches: -avzr
-          path: ./*
-          remote_path: ${{ secrets.REMOTE_PATH }}
-          remote_host: ${{ secrets.SSH_HOST }} 
-          remote_port: ${{ secrets.SSH_PORT }} 
-          remote_user: ${{ secrets.SSH_USER }} 
-          remote_key: ${{ secrets.SECRET_KEY }}
+     # - name: rsync deployments
+     #   uses: burnett01/rsync-deployments@5.2
+     #   with:
+     #      switches: -avzr
+     #      path: ./*
+     #      remote_path: ${{ secrets.REMOTE_PATH }}
+     #      remote_host: ${{ secrets.SSH_HOST }} 
+     #      remote_port: ${{ secrets.SSH_PORT }} 
+     #      remote_user: ${{ secrets.SSH_USER }} 
+     #      remote_key: ${{ secrets.SECRET_KEY }}
           
      - name: Build npm & Restart nginx
        uses: fifsky/ssh-action@master
@@ -35,6 +35,9 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           command: |
              cd ${{ secrets.REMOTE_PATH }}
+             git fetch 
+             git reset --hard origin/dev-done
+             git clean -df
              npm run build
              sudo systemctl restart nginx
 
