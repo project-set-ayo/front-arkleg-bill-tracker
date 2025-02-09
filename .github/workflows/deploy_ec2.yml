@@ -36,7 +36,7 @@ jobs:
           command: |
              cd ${{ secrets.REMOTE_PATH }}
              git fetch 
-             git reset --hard origin/dev-done
+             git reset --hard origin/main
              git clean -df
              npm run build
              sudo systemctl restart nginx
