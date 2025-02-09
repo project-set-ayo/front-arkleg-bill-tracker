@@ -1,0 +1,40 @@
+name: Arkleg Frontend 
+    
+# Controls when the action will run. 
+on: 
+  push:
+  # Triggers the workflow on push or pull request events but only for the Naijasea Sandbox branch
+    branches: [ main ]
+    
+jobs:
+  Install-SSHKey-Deploy-with-Rsync:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v2
+       with: 
+        ref: main
+        
+     - name: rsync deployments
+       uses: burnett01/rsync-deployments@5.2
+       with:
+          switches: -avzr
+          path: ./*
+          remote_path: ${{ secrets.REMOTE_PATH }}
+          remote_host: ${{ secrets.SSH_HOST }} 
+          remote_port: ${{ secrets.SSH_PORT }} 
+          remote_user: ${{ secrets.SSH_USER }} 
+          remote_key: ${{ secrets.SECRET_KEY }}
+          
+     - name: Build npm & Restart nginx
+       uses: fifsky/ssh-action@master
+       with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SECRET_KEY }}
+          pass: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          command: |
+             cd ${{ secrets.REMOTE_PATH }}
+             npm run build
+             sudo systemctl restart nginx
+
