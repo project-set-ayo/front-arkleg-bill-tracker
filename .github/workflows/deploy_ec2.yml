@@ -8,18 +8,50 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     steps:
-     - name: Checkout Code
-       uses: actions/checkout@v2
-       with: 
-        ref: main
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-     - name: Executing Remote SSH Command
-       env:
-        SSH_USER: ${{ secrets.SSH_USER }}
-        SSH_HOST: ${{ secrets.SSH_HOST }}        
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-       run:  |
-          ssh "$SSH_USER"@"$SSH_HOST" -i "$SECRET_KEY"
+      - name: Set Up SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SECRET_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Executing Remote SSH Commands
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd /var/www/api-arkleg-bill-tracker
+            git fetch --all
+            git reset --hard origin/main
+            git clean -df
+            npm install --legacy-peer-deps
+            npm run build
+            sudo systemctl restart nginx
+          EOF
+
+# name: Arkleg Frontend 
+
+# on: 
+#   push:
+#     branches: [ main ]
+    
+# jobs:
+#   Deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#      - name: Checkout Code
+#        uses: actions/checkout@v2
+#        with: 
+#         ref: main
+
+#      - name: Executing Remote SSH Command
+#        env:
+#         SSH_USER: ${{ secrets.SSH_USER }}
+#         SSH_HOST: ${{ secrets.SSH_HOST }}        
+#         SECRET_KEY: ${{ secrets.SECRET_KEY }}
+#        run:  |
+#           ssh "$SSH_USER"@"$SSH_HOST" -i "$SECRET_KEY"
     
      # - name: executing remote ssh commands using password
      #   uses: appleboy/ssh-action@v1.2.0
