@@ -21,7 +21,7 @@ jobs:
       - name: Executing Remote SSH Commands
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd /var/www/api-arkleg-bill-tracker
+            cd /var/www/front-arkleg-bill-tracker
             git fetch --all
             git reset --hard origin/main
             git clean -df
