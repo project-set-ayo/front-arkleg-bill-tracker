@@ -25,6 +25,7 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             git clean -df
+            export NODE_OPTIONS=--max_old_space_size=4096
             npm install --legacy-peer-deps
             npm run build
             sudo systemctl restart nginx
