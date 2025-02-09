@@ -1,9 +1,9 @@
-name: Arkleg Frontend 
+name: Arkleg Frontend
 
-on: 
+on:
   push:
-    branches: [ main ]
-    
+    branches: [main]
+
 jobs:
   Deploy:
     runs-on: ubuntu-latest
@@ -28,5 +28,6 @@ jobs:
             export NODE_OPTIONS=--max_old_space_size=4096
             npm install --legacy-peer-deps
             npm run build
+            rm -rf node_modules
             sudo systemctl restart nginx
           EOF
