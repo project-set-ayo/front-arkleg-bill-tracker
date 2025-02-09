@@ -14,8 +14,12 @@ jobs:
         ref: main
 
      - name: Executing Remote SSH Command
+       env:
+        SSH_USER: ${{ secrets.SSH_USER }}
+        SSH_HOST: ${{ secrets.SSH_HOST }}        
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
        run:  |
-          ssh ubuntu@52.36.229.71
+          ssh "$SSH_USER"@"$SSH_HOST" -i "$SECRET_KEY"
     
      # - name: executing remote ssh commands using password
      #   uses: appleboy/ssh-action@v1.2.0
