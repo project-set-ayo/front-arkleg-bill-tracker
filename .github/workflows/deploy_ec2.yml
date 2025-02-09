@@ -13,16 +13,16 @@ jobs:
        with: 
         ref: main
     
-     - name: executing remote ssh commands using password
-       uses: appleboy/ssh-action@v1.2.0
-       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        password: ${{ secrets.PASSWORD }}
-        key: ${{ secrets.SECRET_KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-            cd ${{ secrets.REMOTE_PATH }} || exit 1 && git fetch --all && git reset --hard origin/main && git clean -df && npm install --legacy-peer-deps && npm run build && sudo systemctl restart nginx 
+     # - name: executing remote ssh commands using password
+     #   uses: appleboy/ssh-action@v1.2.0
+     #   with:
+     #    host: ${{ secrets.SSH_HOST }}
+     #    username: ${{ secrets.SSH_USER }}
+     #    password: ${{ secrets.PASSWORD }}
+     #    key: ${{ secrets.SECRET_KEY }}
+     #    port: ${{ secrets.PORT }}
+     #    script: |
+     #        cd ${{ secrets.REMOTE_PATH }} || exit 1 && git fetch --all && git reset --hard origin/main && git clean -df && npm install --legacy-peer-deps && npm run build && sudo systemctl restart nginx 
 
      # - name: Execute SSH commmands on remote server
      #   uses: JimCronqvist/action-ssh@master
@@ -39,19 +39,19 @@ jobs:
      #        npm run build 
      #        sudo systemctl restart nginx 
 
-     # - name: Deploy with SSH
-     #   uses: fifsky/ssh-action@master
-     #   with:
-     #      host: ${{ secrets.SSH_HOST }}
-     #      user: ${{ secrets.SSH_USER }}
-     #      key: ${{ secrets.SECRET_KEY }}
-     #      pass: ${{ secrets.SSH_PASSWORD }}
-     #      port: ${{ secrets.SSH_PORT }}
-     #      command: |
-     #         cd ${{ secrets.REMOTE_PATH }} || exit 1
-     #         git fetch --all
-     #         git reset --hard origin/main
-     #         git clean -df
-     #         npm install --legacy-peer-deps
-     #         npm run build
-     #         sudo systemctl restart nginx
+     - name: Deploy with SSH
+       uses: fifsky/ssh-action@master
+       with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SECRET_KEY }}
+          pass: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          command: |
+             cd ${{ secrets.REMOTE_PATH }} || exit 1
+             git fetch --all
+             git reset --hard origin/main
+             git clean -df
+             npm install --legacy-peer-deps
+             npm run build
+             sudo systemctl restart nginx
