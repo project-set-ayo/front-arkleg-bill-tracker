@@ -13,31 +13,31 @@ jobs:
        with: 
         ref: main
     
-     # - name: executing remote ssh commands using password
-     #   uses: appleboy/ssh-action@v1.2.0
-     #   with:
-     #    host: ${{ secrets.SSH_HOST }}
-     #    username: ${{ secrets.SSH_USER }}
-     #    password: ${{ secrets.PASSWORD }}
-     #    key: ${{ secrets.SECRET_KEY }}
-     #    port: ${{ secrets.PORT }}
-     #    script: |
-     #        cd ${{ secrets.REMOTE_PATH }} || exit 1 && git fetch --all && git reset --hard origin/main && git clean -df && npm install --legacy-peer-deps && npm run build && sudo systemctl restart nginx 
-
-     - name: Execute SSH commmands on remote server
-       uses: JimCronqvist/action-ssh@master
+     - name: executing remote ssh commands using password
+       uses: appleboy/ssh-action@v1.2.0
        with:
-         hosts: ${{ secrets.SSH_HOST }}
-         privateKey: ${{ secrets.SECRET_KEY }}
-         command: |
-            cd ${{ secrets.REMOTE_PATH }} || exit 1 
-            git fetch --all 
-            touch test_file
-            git reset --hard origin/main
-            git clean -df 
-            npm install  
-            npm run build 
-            sudo systemctl restart nginx 
+        host: 52.36.229.71
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.PASSWORD }}
+        key: ${{ secrets.SECRET_KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+            cd ${{ secrets.REMOTE_PATH }} || exit 1 && git fetch --all && git reset --hard origin/main && git clean -df && npm install --legacy-peer-deps && npm run build && sudo systemctl restart nginx 
+
+     # - name: Execute SSH commmands on remote server
+     #   uses: JimCronqvist/action-ssh@master
+     #   with:
+     #     hosts: ${{ secrets.SSH_HOST }}
+     #     privateKey: ${{ secrets.SECRET_KEY }}
+     #     command: |
+     #        cd ${{ secrets.REMOTE_PATH }} || exit 1 
+     #        git fetch --all 
+     #        touch test_file
+     #        git reset --hard origin/main
+     #        git clean -df 
+     #        npm install  
+     #        npm run build 
+     #        sudo systemctl restart nginx 
 
      # - name: Deploy with SSH
      #   uses: fifsky/ssh-action@master
