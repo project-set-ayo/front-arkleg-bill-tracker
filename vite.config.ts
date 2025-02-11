@@ -14,10 +14,5 @@ export default defineConfig({
       host: "localhost",
       port: 3000,
     },
-    proxy: {
-      "/api": {
-        target: "https://api.arklegbilltracker.com",
-      },
-    },
   },
 });
