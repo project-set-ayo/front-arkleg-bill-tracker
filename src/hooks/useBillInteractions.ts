@@ -12,15 +12,15 @@ interface BillInteraction {
 
 export default function useBillInteractions() {
   const [billInteractions, setBillInteractions] = useState<BillInteraction[]>(
-    []
+    [],
   );
 
   useEffect(() => {
     api
-      .get<BillInteraction[]>("/bill/interactions/")
+      .get<BillInteraction[]>("/bill/user/interaction/")
       .then((res) => setBillInteractions(res.data))
       .catch((error) =>
-        console.error("Error fetching bill interactions: ", error)
+        console.error("Error fetching bill interactions: ", error),
       );
   }, []);
 

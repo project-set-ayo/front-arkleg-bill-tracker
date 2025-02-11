@@ -55,40 +55,11 @@ export default function useBillDetail(legiscanBillId: string) {
     fetchBillDetail();
   }, [legiscanBillId]);
 
-  const updateInteraction = async (
-    newStance: "approve" | "oppose" | "watch",
-    newNote: string
-  ) => {
-    try {
-      const response = await api.post(`/bill/${legiscanBillId}/`, {
-        stance: newStance,
-        note: newNote,
-      });
-
-      console.log("response-data", response.data);
-
-      setUserInfo((info) =>
-        info
-          ? {
-              ...info,
-              stance: response.data.stance,
-              note: response.data.note,
-            }
-          : null
-      );
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message || "Failed to update bill interaction"
-      );
-    }
-  };
-
   return {
     billInfo,
     userInfo,
     adminInfo,
     loading,
     error,
-    updateInteraction,
   };
 }

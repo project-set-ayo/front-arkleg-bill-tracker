@@ -34,9 +34,10 @@ const BillInteractionsList: React.FC = () => {
 
   // ✅ Pagination Logic
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
+  console.log("billInteractions:", billInteractions);
   const paginatedInteractions = billInteractions.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
   const totalPages = Math.ceil(billInteractions.length / ITEMS_PER_PAGE);
 

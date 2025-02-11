@@ -20,8 +20,9 @@ import AdminBillUpdateForm from "../../components/AdminBillUpdateForm";
 const BillDetail: React.FC = () => {
   const { user, userLoading, userError } = useUserInfo();
   const { billId } = useParams<{ billId: string }>();
-  const { billInfo, adminInfo, userInfo, loading, error, updateInteraction } =
-    useBillDetail(billId || "");
+  const { billInfo, adminInfo, userInfo, loading, error } = useBillDetail(
+    billId || "",
+  );
 
   if (loading) {
     return <CircularProgress />;
@@ -82,7 +83,7 @@ const BillDetail: React.FC = () => {
                 <Typography variant="h6">Bill Upcoming Events</Typography>
                 <List>
                   {billInfo.calendar.map((event) => (
-                    <ListItem key={event.description + event.date}>
+                    <ListItem key={event.event_hash}>
                       <ListItemText
                         primary={event.description}
                         secondary={event.date}
@@ -106,10 +107,7 @@ const BillDetail: React.FC = () => {
           {/* Stance & Note Interaction */}
           <Grid size={{ xs: 12 }}>
             <Paper elevation={1} sx={{ p: 2 }}>
-              <BillInteractionForm
-                userInfo={userInfo}
-                updateInteraction={updateInteraction}
-              />
+              <BillInteractionForm legiscanBillId={billId} />
             </Paper>
           </Grid>
         </Grid>

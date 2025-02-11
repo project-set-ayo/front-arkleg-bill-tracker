@@ -16,11 +16,7 @@ export default defineConfig({
     },
     proxy: {
       "/api": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-        rewrite: function (path: string): string {
-          return path.replace(/^\/api/, "");
-        },
+        target: "https://api.arklegbilltracker.com",
       },
     },
   },

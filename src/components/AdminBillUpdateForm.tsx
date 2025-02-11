@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useAdminBill } from "../hooks/useAdminBill";
 import { useTimedMessage } from "../hooks/useTimedMessage";
+import { useFormSaveState } from "../hooks/useFormSaveState";
 import {
   TextField,
   Button,
@@ -25,58 +26,29 @@ const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
   const { updateBill, loading, error, bill } = useAdminBill(billId);
   const { message, showMessage } = useTimedMessage(3000);
 
-  // Single object to manage form state
-  const [formData, setFormData] = useState({
-    admin_note: "",
-    admin_stance: "",
-    admin_expanded_analysis_url: "",
-    tag_names: "",
-  });
-
-  // First load state to prevent showing messages on initial load
-  const [firstLoad, setFirstLoad] = useState(true);
-
-  useEffect(() => {
-    if (bill) {
-      setFormData({
-        admin_note: bill.admin_note || "",
-        admin_stance: bill.admin_stance || "",
-        admin_expanded_analysis_url: bill.admin_expanded_analysis_url || "",
-        tag_names: bill.tags?.join(", ") || "",
-      });
-
-      setFirstLoad(false);
-    }
-  }, [bill]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleStanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, admin_stance: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const updateData = {
-      ...formData,
-      legiscan_bill_id: billId,
-      tag_names: formData.tag_names.split(",").map((tag) => tag.trim()), // Convert comma-separated tags to array
-    };
-
-    if (billId) {
-      const result = await updateBill(updateData);
-      if (result) {
-        showMessage("Bill updated successfully!", "success");
-      } else {
-        showMessage("Failed to update bill.", "error");
-      }
-    }
-  };
+  // Using useFormSaveState for handling form state
+  const { formState, handleChange, handleSave, hasChanges, isSaving } =
+    useFormSaveState(
+      {
+        admin_note: bill?.admin_note || "",
+        admin_stance: bill?.admin_stance || "",
+        admin_expanded_analysis_url: bill?.admin_expanded_analysis_url || "",
+        tag_names: bill?.tags?.join(", ") || "",
+      },
+      async (updatedData) => {
+        const updateData = {
+          ...updatedData,
+          legiscan_bill_id: billId,
+          tag_names: updatedData.tag_names.split(",").map((tag) => tag.trim()), // Convert tags to an array
+        };
+        const result = await updateBill(updateData);
+        if (result) {
+          showMessage("Bill updated successfully!", "success");
+        } else {
+          showMessage("Failed to update bill.", "error");
+        }
+      },
+    );
 
   return (
     <>
@@ -84,14 +56,15 @@ const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
         {COMPONENT_LABEL}
       </Typography>
 
-      {error && !firstLoad && <Alert severity="error">{error}</Alert>}
-      {message && !firstLoad && (
-        <Alert severity={message.type}>{message.text}</Alert>
-      )}
+      {error && <Alert severity="error">{error}</Alert>}
+      {message && <Alert severity={message.type}>{message.text}</Alert>}
 
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSave();
+        }}
         sx={{ display: "flex", flexDirection: "column", gap: 2 }}
       >
         {/* Admin Stance Radio Buttons */}
@@ -99,8 +72,8 @@ const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
           <FormControl component="fieldset">
             <RadioGroup
               name="admin_stance"
-              value={formData.admin_stance}
-              onChange={handleStanceChange}
+              value={formState.admin_stance}
+              onChange={handleChange}
               row
             >
               <FormControlLabel
@@ -128,7 +101,7 @@ const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
           name="admin_note"
           multiline
           rows={3}
-          value={formData.admin_note}
+          value={formState.admin_note}
           onChange={handleChange}
           fullWidth
         />
@@ -137,7 +110,7 @@ const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
         <TextField
           label="Expanded Analysis URL"
           name="admin_expanded_analysis_url"
-          value={formData.admin_expanded_analysis_url}
+          value={formState.admin_expanded_analysis_url}
           onChange={handleChange}
           fullWidth
         />
@@ -146,21 +119,23 @@ const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
         <TextField
           label="Tags (comma-separated)"
           name="tag_names"
-          value={formData.tag_names}
+          value={formState.tag_names}
           onChange={handleChange}
           fullWidth
         />
 
-        {/* Submit Button */}
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          disabled={loading}
-          sx={{ mt: 2 }}
-        >
-          {loading ? <CircularProgress size={24} /> : ACTION_LABEL}
-        </Button>
+        {/* Save Button - Only Shows When There Are Changes */}
+        {hasChanges && (
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={isSaving || loading}
+            sx={{ mt: 2 }}
+          >
+            {isSaving ? <CircularProgress size={24} /> : ACTION_LABEL}
+          </Button>
+        )}
       </Box>
     </>
   );

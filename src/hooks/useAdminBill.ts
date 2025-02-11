@@ -26,7 +26,11 @@ export function useAdminBill(billId: string) {
         const response = await api.get<BillResponse>(`/bill/admin/${billId}`);
         setBill(response.data);
       } catch (err: any) {
-        setError(err.response?.data?.error || "Failed to fetch bill details");
+        if (err.response?.status === 404) {
+          console.warn(`No admin information for bill ${billId}`);
+        } else {
+          setError(err.response?.data?.error || "Failed to fetch bill details");
+        }
       } finally {
         setLoading(false);
       }
@@ -42,7 +46,7 @@ export function useAdminBill(billId: string) {
     try {
       const response = await api.post<BillResponse>(
         `/bill/admin/${billId}/`,
-        data
+        data,
       );
       setBill(response.data);
       return response.data;

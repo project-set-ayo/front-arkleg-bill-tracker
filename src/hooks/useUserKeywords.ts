@@ -11,7 +11,7 @@ export default function useUserKeywords() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const USER_KEYWORDS_URL = "/bill/user/keywords/";
+  const USER_KEYWORDS_URL = "/bill/user/keyword/";
 
   useEffect(() => {
     const fetchKeywords = async () => {

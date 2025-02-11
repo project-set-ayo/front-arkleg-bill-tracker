@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Box,
   TextField,
@@ -8,20 +8,19 @@ import {
 } from "@mui/material";
 import useUserProfile from "../hooks/useUserProfile";
 import LogoutButton from "./LogoutButton";
+import { useFormSaveState } from "../hooks/useFormSaveState";
 
 const UserProfileManager: React.FC = () => {
   const { user, loading, error, updateProfile } = useUserProfile();
-  const [phoneNumber, setPhoneNumber] = useState(user?.phone_number || "");
 
-  useEffect(() => {
-    if (user?.phone_number) {
-      setPhoneNumber(user.phone_number);
-    }
-  }, [user]);
-
-  const handleSave = async () => {
-    await updateProfile({ phone_number: phoneNumber });
-  };
+  // Use the fixed custom hook for handling form state
+  const { formState, handleChange, handleSave, hasChanges, isSaving } =
+    useFormSaveState(
+      { phone_number: user?.phone_number || "" },
+      async (data) => {
+        await updateProfile({ phone_number: data.phone_number });
+      },
+    );
 
   if (loading) return <CircularProgress />;
   if (error) return <Typography color="error">{error}</Typography>;
@@ -40,22 +39,20 @@ const UserProfileManager: React.FC = () => {
       />
       <TextField
         label="Phone Number"
-        value={phoneNumber}
-        onChange={(e) => setPhoneNumber(e.target.value)}
+        name="phone_number" // Ensure the name matches the formState key
+        value={formState.phone_number}
+        onChange={handleChange}
         fullWidth
         margin="normal"
       />
 
-      <Box
-        display={"flex"}
-        justifyContent="space-between"
-        alignItems="center"
-        xs={{ p: 2 }}
-      >
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <LogoutButton />
-        <Button variant="contained" onClick={handleSave}>
-          Save Changes
-        </Button>
+        {hasChanges && (
+          <Button variant="contained" onClick={handleSave} disabled={isSaving}>
+            {isSaving ? "Saving..." : "Save Changes"}
+          </Button>
+        )}
       </Box>
     </Box>
   );

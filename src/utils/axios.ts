@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
 
-const API_BASE_URL: string = "https://api.arklegbilltracker.com/api";
+const API_BASE_URL: string = "/api";
 
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,

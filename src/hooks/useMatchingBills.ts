@@ -20,11 +20,11 @@ export default function useMatchingBills() {
     const fetchMatchingBills = async () => {
       setLoading(true);
       try {
-        const response = await api.get("/bill/user/keywords/matching-bills/");
+        const response = await api.get("/bill/user/keyword/matching-bills/");
         setBills(response.data);
       } catch (err: any) {
         setError(
-          err.response?.data?.detail || "Failed to fetch matching bills"
+          err.response?.data?.detail || "Failed to fetch matching bills",
         );
       }
       setLoading(false);
