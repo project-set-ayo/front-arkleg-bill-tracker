@@ -20,8 +20,8 @@ interface ChildProps {
 }
 
 const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
-  const COMPONENT_LABEL = "Admin Info";
-  const ACTION_LABEL = "Update Admin Info";
+  const COMPONENT_LABEL = "Administrator's Grading";
+  const ACTION_LABEL = "Update Admin. Grading";
 
   const { updateBill, loading, error, bill } = useAdminBill(billId);
   const { message, showMessage } = useTimedMessage(3000);

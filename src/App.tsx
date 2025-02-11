@@ -4,9 +4,13 @@ import Grid from "@mui/material/Grid2";
 import NewsFeed from "./components/NewsFeed";
 import BillInteractionsList from "./components/BillInteractionsList";
 import MatchingBillsList from "./components/MatchingBillsList";
+import AdBanner from "./components/AdBanner";
+import useAds from "./hooks/useAds";
 
 function App() {
   const navigate = useNavigate();
+  const { ads } = useAds();
+  const hasAds = ads.length > 0;
 
   return (
     <Box
@@ -22,16 +26,14 @@ function App() {
         columns={12}
         sx={{ mb: (theme) => theme.spacing(2) }}
       >
-        <Grid size={{ xs: 12, md: 9 }}>
+        <Grid size={{ xs: 12, md: hasAds ? 9 : 12 }}>
           <BillInteractionsList />
         </Grid>
-        <Grid size={{ xs: 12, md: 3 }}>
-          <Paper elevation={1} sx={{ p: 2 }}>
-            <Typography variant="h5" align="center">
-              Ads
-            </Typography>
-          </Paper>
-        </Grid>
+        {hasAds && (
+          <Grid size={{ xs: 12, md: 3 }}>
+            <AdBanner />
+          </Grid>
+        )}
 
         <Grid size={{ xs: 12, md: 3 }}>
           <NewsFeed />

@@ -46,7 +46,7 @@ const UserKeywordManager: React.FC = () => {
     setSelectedKeywords((prev) =>
       prev.includes(keywordId)
         ? prev.filter((id) => id !== keywordId)
-        : [...prev, keywordId]
+        : [...prev, keywordId],
     );
   };
 
@@ -68,7 +68,7 @@ const UserKeywordManager: React.FC = () => {
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (
-    <Box sx={{ p: 3, border: "1px solid #ddd", borderRadius: 2, mt: 3 }}>
+    <Box sx={{ p: 3, border: "1px solid #ddd", borderRadius: 2 }}>
       <Typography variant="h5" gutterBottom>
         Tracked Keywords
       </Typography>

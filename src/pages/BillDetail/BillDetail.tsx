@@ -16,6 +16,7 @@ import PdfViewer from "../../components/PdfViewer";
 import BillInteractionForm from "../../components/BillInteractionForm";
 import AdminBillInfo from "../../components/AdminBillInfo";
 import AdminBillUpdateForm from "../../components/AdminBillUpdateForm";
+import AdBanner from "../../components/AdBanner";
 
 const BillDetail: React.FC = () => {
   const { user, userLoading, userError } = useUserInfo();
@@ -97,11 +98,7 @@ const BillDetail: React.FC = () => {
 
           {/* Sidebar (Can be used for Ads or Other Content) */}
           <Grid size={{ xs: 12, md: 3 }}>
-            <Paper elevation={1} sx={{ p: 2 }}>
-              <Typography variant="h5" align="center">
-                Ads
-              </Typography>
-            </Paper>
+            <AdBanner />
           </Grid>
 
           {/* Stance & Note Interaction */}

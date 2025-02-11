@@ -4,6 +4,7 @@ import { api } from "../utils/axios";
 interface UserProfile {
   email: string;
   phone_number: string;
+  is_admin: boolean;
 }
 
 export default function useUserProfile() {
@@ -37,5 +38,11 @@ export default function useUserProfile() {
     }
   };
 
-  return { user, loading, error, updateProfile };
+  return {
+    user,
+    isAdmin: user?.is_admin || false, // Always return a boolean value
+    loading,
+    error,
+    updateProfile,
+  };
 }
