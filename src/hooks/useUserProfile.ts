@@ -7,10 +7,15 @@ interface UserProfile {
   is_admin: boolean;
 }
 
+interface ProfileErrors {
+  phone_number?: string;
+  non_field_errors?: string;
+}
+
 export default function useUserProfile() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Record<string, string | null>>({});
 
   const USER_PROFILE_URL = "/user/profile/";
 
@@ -21,7 +26,10 @@ export default function useUserProfile() {
         const response = await api.get(USER_PROFILE_URL);
         setUser(response.data);
       } catch (err: any) {
-        setError(err.response?.data?.detail || "Failed to load profile");
+        setErrors({
+          non_field_errors:
+            err.response?.data?.detail || "Failed to load profile",
+        });
       }
       setLoading(false);
     };
@@ -33,16 +41,26 @@ export default function useUserProfile() {
     try {
       const response = await api.patch(USER_PROFILE_URL, updates);
       setUser(response.data);
-    } catch (err: any) {
-      setError(err.response?.data?.detail || "Failed to update profile");
+    } catch (error: any) {
+      const responseErrors = error.response?.data || {};
+      const formattedErrors: Record<string, string | null> = {};
+
+      Object.entries(responseErrors).forEach(([key, messages]) => {
+        if (Array.isArray(messages) && messages.length > 0) {
+          formattedErrors[key] = messages[0]; // Display first error message
+        }
+      });
+
+      setErrors(formattedErrors);
     }
   };
 
   return {
     user,
-    isAdmin: user?.is_admin || false, // Always return a boolean value
+    isAdmin: user?.is_admin || false,
     loading,
-    error,
+    errors,
+    setErrors,
     updateProfile,
   };
 }

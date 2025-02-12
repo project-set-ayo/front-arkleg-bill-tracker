@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import useAdminAds from "../hooks/useAdminAds";
-import { Box, Typography, CircularProgress } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import AdForm from "./AdForm";
 import AdList from "./AdList";
 

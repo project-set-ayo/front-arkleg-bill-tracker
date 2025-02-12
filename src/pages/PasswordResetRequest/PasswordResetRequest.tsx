@@ -56,13 +56,11 @@ const ForgotPassword = () => {
     event.preventDefault();
 
     if (validate()) {
-      console.log({ email: formData.email });
       try {
         const { detail } = await resetPasswordRequest(formData.email);
         setFormData({ email: "" });
         setSuccessMessage(detail);
       } catch (err: any) {
-        console.log("error", err);
         setSuccessMessage("");
       }
     }
@@ -71,9 +69,10 @@ const ForgotPassword = () => {
   return (
     <Container
       sx={{
-        paddingY: 3,
         display: "flex",
+        alignItems: "center",
         justifyContent: "center",
+        minHeight: "100vh",
       }}
     >
       <Card
@@ -86,8 +85,8 @@ const ForgotPassword = () => {
           minWidth: "200px",
           maxWidth: "400px",
           bgcolor: "#f3f3f3",
-          padding: 4,
-          borderRadius: "10px",
+          p: 4,
+          textAlign: "center",
         }}
       >
         <Box
@@ -100,9 +99,8 @@ const ForgotPassword = () => {
         >
           <Typography variant="h4">Forgot Password?</Typography>
 
-          <Typography variant="body1" component={"p"}>
-            Enter your email address and we will send you instructions to reset
-            your password.
+          <Typography variant="body2" component={"p"} color="textSecondary">
+            Enter your email address for instructions to reset your password.
           </Typography>
         </Box>
 

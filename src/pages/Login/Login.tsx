@@ -7,116 +7,40 @@ import {
   Typography,
   Alert,
   Divider,
+  CircularProgress,
 } from "@mui/material";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
-
-import { login } from "../../utils/endpoints";
-
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import useLogin from "../../hooks/useLogin";
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
 
-interface FormData {
-  email: string;
-  password: string;
-}
-
-interface FormErrors {
-  email: string;
-  password: string;
-}
-
 const Login = () => {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [formData, setFormData] = useState<FormData>({
-    email: "",
-    password: "",
-  });
+  const { handleLogin, errors, isLoading } = useLogin();
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
-  const [errors, setErrors] = useState<FormErrors>({
-    email: "",
-    password: "",
-  });
-
-  // Handle input changes
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-
-    // Optionally, clear error when user starts typing
-    setErrors({
-      ...errors,
-      [name]: "",
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-  // Validate the form inputs
-  const validate = () => {
-    const newErrors: FormErrors = {
-      email: "",
-      password: "",
-    };
-
-    let isValid = true;
-
-    // Validate email
-    if (!formData.email) {
-      newErrors.email = "Email is required.";
-      isValid = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Invalid email address.";
-      isValid = false;
-    }
-
-    // Validate password
-    if (!formData.password) {
-      newErrors.password = "Password is required.";
-      isValid = false;
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters.";
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  };
-
-  const handleHomeRedirect = () => {
-    navigate("/");
-  };
-
-  // Handle form submission
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (validate()) {
-      // Proceed with form submission (e.g., API call)
-      console.log({ email: formData.email, password: formData.password });
-
-      try {
-        await login(formData.email, formData.password);
-        handleHomeRedirect();
-      } catch (error: any) {
-        setErrorMessage(error.response?.data?.detail || "Login failed.");
-      }
-    }
+    handleLogin(formData.email, formData.password);
   };
 
   return (
     <Container
       sx={{
-        paddingY: 3,
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
       }}
     >
       <Card
-        component={"form"}
+        component="form"
         onSubmit={handleSubmit}
         sx={{
           display: "flex",
@@ -125,19 +49,22 @@ const Login = () => {
           minWidth: "200px",
           maxWidth: "400px",
           bgcolor: "#f3f3f3",
-          padding: 4,
-          borderRadius: "10px",
+          p: 4,
         }}
       >
-        <Typography variant="h3" sx={{ textAlign: "center" }}>
+        <Typography variant="h4" sx={{ textAlign: "center" }}>
           Login
         </Typography>
+
+        {errors.non_field_errors && (
+          <Alert severity="error">{errors.non_field_errors}</Alert>
+        )}
 
         <EmailInput
           name="email"
           value={formData.email}
           onChange={handleInputChange}
-          error={errors.email ? true : false}
+          error={Boolean(errors.email)}
           helperText={errors.email}
         />
 
@@ -146,34 +73,45 @@ const Login = () => {
           name="password"
           value={formData.password}
           onChange={handleInputChange}
-          error={errors.password ? true : false}
+          error={Boolean(errors.password)}
           helperText={errors.password}
         />
 
-        <Typography
-          sx={{
-            textDecoration: "underline",
-            textAlign: "end",
-          }}
-        >
-          <RouterLink to="/forgot-password">Forgot Password?</RouterLink>
-        </Typography>
+        <Box textAlign="end">
+          <Typography variant="body2" color="textSecondary">
+            <RouterLink
+              to="/forgot-password"
+              style={{ textDecoration: "underline" }}
+            >
+              Forgot Password?
+            </RouterLink>
+          </Typography>
+        </Box>
 
-        <Button type="submit" variant="contained">
-          Login
+        <Button type="submit" variant="contained" disabled={isLoading}>
+          {isLoading ? <CircularProgress size={24} /> : "Login"}
         </Button>
-        <Divider variant="middle">
-          <Typography variant="body1">Or</Typography>
-        </Divider>
-        <GoogleLoginButton onSuccess={() => navigate("/")} />
 
-        <Typography variant="body1" sx={{ textAlign: "end" }}>
-          Don't have an account?{" "}
-          <Box component={"span"} sx={{ textDecoration: "underline" }}>
-            <RouterLink to="/register">Sign Up Here</RouterLink>
-          </Box>
-        </Typography>
-        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        <Divider variant="middle">
+          <Typography variant="body2" color="textSecondary">
+            Or
+          </Typography>
+        </Divider>
+
+        <GoogleLoginButton
+          label="Login with Google"
+          onSuccess={() => navigate("/")}
+        />
+
+        {/* Navigate to Login if the user already has an account */}
+        <Box textAlign="center">
+          <Typography variant="body2" color="textSecondary">
+            Not registered yet?{" "}
+            <RouterLink to="/register" style={{ textDecoration: "underline" }}>
+              Register here
+            </RouterLink>
+          </Typography>
+        </Box>
       </Card>
     </Container>
   );

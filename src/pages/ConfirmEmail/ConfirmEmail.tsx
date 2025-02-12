@@ -1,44 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, Container, Typography } from "@mui/material";
-import { confirmEmail } from "../../utils/endpoints";
-import { useDelayedAction } from "../../hooks/useDelayedAction";
+import {
+  Card,
+  Container,
+  Typography,
+  Alert,
+  CircularProgress,
+  Box,
+  Button,
+} from "@mui/material";
+import useConfirmEmail from "../../hooks/useConfirmEmail";
 
 const ConfirmEmail: React.FC = () => {
   const { key } = useParams<{ key: string }>();
   const navigate = useNavigate();
-  const delayedLoginRedirect = useDelayedAction(() => navigate("/login"));
-  const [status, setStatus] = useState<string>("Verifying your email...");
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const verifyEmail = async () => {
-      if (!key) {
-        setError("Invalid verification key.");
-        setStatus("");
-        return;
-      }
-
-      try {
-        await confirmEmail(key);
-        setStatus(
-          "Your email has been successfully verified! Proceed to login.",
-        );
-        delayedLoginRedirect();
-      } catch (err: any) {
-        setError(err);
-      }
-    };
-
-    verifyEmail();
-  }, [key, navigate]);
+  const { status, error, loading } = useConfirmEmail(key);
 
   return (
     <Container
       sx={{
-        paddingY: 3,
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
       }}
     >
       <Card
@@ -49,19 +33,38 @@ const ConfirmEmail: React.FC = () => {
           minWidth: "200px",
           maxWidth: "400px",
           bgcolor: "#f3f3f3",
-          padding: 4,
-          borderRadius: "10px",
+          p: 4,
         }}
       >
-        <Typography variant="h3" sx={{ textAlign: "center" }}>
-          Email Confirmation
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          {status && <p style={{ color: "green" }}>{status}</p>}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          {error && <p style={{ color: "red" }}>{error}</p>}
-        </Typography>
+        <Box sx={{ textAlign: "center" }}>
+          <Typography variant="h4" gutterBottom>
+            Email Confirmation
+          </Typography>
+
+          {loading && <CircularProgress sx={{ my: 2 }} />}
+          {status && !error && <Alert severity="success">{status}</Alert>}
+          {error && <Alert severity="error">{error}</Alert>}
+
+          {!error && (
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="body2" color="textSecondary">
+                You will be redirected shortly...
+              </Typography>
+            </Box>
+          )}
+
+          {error && (
+            <Box sx={{ textAlign: "center" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate("/register")}
+              >
+                Go to Register
+              </Button>
+            </Box>
+          )}
+        </Box>
       </Card>
     </Container>
   );

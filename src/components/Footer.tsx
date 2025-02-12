@@ -1,7 +1,25 @@
-import { Box, Container, Typography, Link, IconButton } from "@mui/material";
+import { Box, Typography, Link, IconButton, Stack } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
+
+const socialLinks = [
+  {
+    name: "Twitter",
+    url: "https://x.com/Arklegbilltrack",
+    icon: <TwitterIcon />,
+  },
+  {
+    name: "Instagram",
+    url: "https://www.instagram.com/arkleg_bill_tracker/",
+    icon: <InstagramIcon />,
+  },
+  {
+    name: "Facebook",
+    url: "https://www.facebook.com/levelupconsultingAR",
+    icon: <FacebookIcon />,
+  },
+];
 
 const Footer = () => {
   return (
@@ -9,38 +27,35 @@ const Footer = () => {
       component="footer"
       sx={{ py: 3, mt: 4, borderTop: 1, borderColor: "divider" }}
     >
-      <Container
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ px: 3 }}
       >
         {/* Brand and Copyright */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Typography variant="body2" color="text.secondary">
-            Brand & Copyright Placeholder
-          </Typography>
-        </Box>
+        <Typography variant="body2" color="text.secondary">
+          Brand & Copyright Placeholder
+        </Typography>
 
         {/* Social Icons */}
-        <Box>
-          <IconButton component={Link} href="/" color="inherit">
-            <TwitterIcon />
-          </IconButton>
-          <IconButton component={Link} href="/" color="inherit">
-            <InstagramIcon />
-          </IconButton>
-          <IconButton component={Link} href="/" color="inherit">
-            <FacebookIcon />
-          </IconButton>
-        </Box>
-      </Container>
+        <Stack direction="row" spacing={1}>
+          {socialLinks.map(({ name, url, icon }) => (
+            <IconButton
+              key={name}
+              component={Link}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="inherit"
+              aria-label={name}
+            >
+              {icon}
+            </IconButton>
+          ))}
+        </Stack>
+      </Stack>
     </Box>
   );
 };

@@ -19,9 +19,6 @@ interface UserProfile {
   email: string;
   first_name: string;
   last_name: string;
-  // is_group_leader: boolean;
-  // phone_number: string;
-  // last_login: boolean;
 }
 
 interface ConfirmEmailResponse {
@@ -44,31 +41,31 @@ interface AuthenticateWithGoogleResponse {
 export const registerUser = async (
   email: string,
   password1: string,
-  password2: string
+  password2: string,
 ): Promise<RegisterResponse> => {
   try {
     const response = await apiWithoutAuth.post<RegisterResponse>(
       "/auth/register/",
-      { email, password1, password2 }
+      { email, password1, password2 },
     );
     return response.data;
   } catch (error: any) {
     console.error(
       "Registration failed:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
 };
 
 export const confirmEmail = async (
-  key: string
+  key: string,
 ): Promise<ConfirmEmailResponse> => {
   try {
     console.log("key: ", key);
     const response = await apiWithoutAuth.post<ConfirmEmailResponse>(
       "/auth/register/verify-email/",
-      { key }
+      { key },
     );
 
     console.log("confirmEmail successful, setting authToken.");
@@ -77,7 +74,7 @@ export const confirmEmail = async (
   } catch (error: any) {
     console.error(
       "confirmEmail failed:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -113,18 +110,18 @@ export const logout = async (): Promise<void> => {
 };
 
 export const resetPasswordRequest = async (
-  email: string
+  email: string,
 ): Promise<PasswordResetRequestResponse> => {
   try {
     const response = await apiWithoutAuth.post<RegisterResponse>(
       "/auth/password/reset/",
-      { email }
+      { email },
     );
     return response.data;
   } catch (error: any) {
     console.error(
       "Failed - reset password request.",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -134,18 +131,18 @@ export const resetPasswordConfirm = async (
   uid: string,
   token: string,
   new_password1: string,
-  new_password2: string
+  new_password2: string,
 ): Promise<PasswordResetConfirmResponse> => {
   try {
     const response = await apiWithoutAuth.post<RegisterResponse>(
       "/auth/password/reset/confirm/",
-      { uid, token, new_password1, new_password2 }
+      { uid, token, new_password1, new_password2 },
     );
     return response.data;
   } catch (error: any) {
     console.error(
       "Failed - reset password confirmation.",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -154,12 +151,12 @@ export const resetPasswordConfirm = async (
 // social auth.
 
 export const AuthenticateWithGoogle = async (
-  access_token: string
+  access_token: string,
 ): Promise<AuthenticateWithGoogleResponse> => {
   try {
     const response = await apiWithoutAuth.post<AuthenticateWithGoogleResponse>(
       "/auth/google/",
-      { access_token }
+      { access_token },
     );
     const { key } = response.data;
     Cookies.set("authToken", key, { expires: 7 });
@@ -169,7 +166,7 @@ export const AuthenticateWithGoogle = async (
   } catch (error: any) {
     console.error(
       "Failed to authenticate with Google.",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }
@@ -184,7 +181,7 @@ export const fetchUserProfile = async (): Promise<UserProfile> => {
   } catch (error: any) {
     console.error(
       "Failed to fetch user profile:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw error;
   }

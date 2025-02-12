@@ -20,7 +20,7 @@ const EmailInput = ({
     <TextField
       name={name}
       id="email"
-      label="E-mail"
+      label="email"
       value={value}
       onChange={onChange}
       error={error}

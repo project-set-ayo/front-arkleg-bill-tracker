@@ -26,8 +26,12 @@ const useAdminAds = () => {
     try {
       const res = await api.post("/ads/", { ...newAd, is_active: true });
       setAdminAds((prevAds) => [res.data, ...prevAds]);
-    } catch (err) {
-      console.error("Error adding ad:", err);
+      return { success: true }; // Indicate success
+    } catch (err: any) {
+      if (err.response?.data) {
+        return { success: false, errors: err.response.data }; // Return backend errors
+      }
+      return { success: false, errors: { general: "Failed to create ad" } };
     }
   };
 

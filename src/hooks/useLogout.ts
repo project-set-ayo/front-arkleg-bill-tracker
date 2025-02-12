@@ -9,20 +9,20 @@ const useLogout = () => {
   const logout = async () => {
     try {
       await api.post("/auth/logout/"); // Call logout API (if backend supports it)
+
+      // Clear auth-related storage (modify if needed)
+      localStorage.removeItem("authToken");
+      sessionStorage.removeItem("authToken");
+      Cookies.remove("authToken");
+
+      // social auth
+      googleLogout();
+
+      // Redirect to login
+      navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
-
-    // Clear auth-related storage (modify if needed)
-    localStorage.removeItem("authToken");
-    sessionStorage.removeItem("authToken");
-    Cookies.remove("authToken");
-
-    // social auth
-    googleLogout();
-
-    // Redirect to login
-    navigate("/login");
   };
 
   return logout;

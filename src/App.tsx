@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router-dom";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import NewsFeed from "./components/NewsFeed";
 import BillInteractionsList from "./components/BillInteractionsList";
@@ -8,7 +7,6 @@ import AdBanner from "./components/AdBanner";
 import useAds from "./hooks/useAds";
 
 function App() {
-  const navigate = useNavigate();
   const { ads } = useAds();
   const hasAds = ads.length > 0;
 
