@@ -39,7 +39,9 @@ const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
         const updateData = {
           ...updatedData,
           legiscan_bill_id: billId,
-          tag_names: updatedData.tag_names.split(",").map((tag) => tag.trim()), // Convert tags to an array
+          tag_names: updatedData.tag_names
+            ? updatedData.tag_names.split(",").map((tag) => tag.trim())
+            : [], // Convert tags to an array
         };
         const result = await updateBill(updateData);
         if (result) {
