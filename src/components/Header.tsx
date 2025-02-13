@@ -1,5 +1,13 @@
+import { Box } from "@mui/material";
+
+import Navigation from "./Navigation";
+
 const Header = () => {
-  return <></>;
+  return (
+    <Box>
+      <Navigation />
+    </Box>
+  );
 };
 
 export default Header;

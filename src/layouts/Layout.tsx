@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import { Navigate, useLocation, Outlet } from "react-router-dom";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
 import Cookies from "js-cookie";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const Layout = () => {
   const location = useLocation();
@@ -17,10 +17,13 @@ const Layout = () => {
   return (
     <Box>
       {/* Navigation */}
-      <Navigation />
+      <Header />
 
       {/* Main Content */}
-      <Box component="main" sx={{ padding: 2, justifyContent: "center" }}>
+      <Box
+        component="main"
+        sx={{ mt: 8, padding: 2, justifyContent: "center" }}
+      >
         <Outlet />
       </Box>
 

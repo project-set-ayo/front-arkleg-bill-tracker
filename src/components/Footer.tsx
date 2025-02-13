@@ -36,7 +36,7 @@ const Footer = () => {
       >
         {/* Brand and Copyright */}
         <Typography variant="body2" color="text.secondary">
-          Brand & Copyright Placeholder
+          Arkleg Bill Tracker - Policy for the People
         </Typography>
 
         {/* Social Icons */}

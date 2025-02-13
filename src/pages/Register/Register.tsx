@@ -10,7 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import useRegister from "../../hooks/useRegister";
-
+import logo from "../../assets/images/arkleg-mono.png";
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
@@ -56,9 +56,15 @@ const Register: React.FC = () => {
           p: 4,
         }}
       >
-        <Typography variant="h4" sx={{ textAlign: "center" }}>
-          Register
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <img src={logo} alt="Logo" width={180} height={"auto"} />
+        </Box>
 
         {successMessage && <Alert severity="success">{successMessage}</Alert>}
         {errors.non_field_errors && (

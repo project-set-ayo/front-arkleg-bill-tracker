@@ -23,7 +23,11 @@ const AdList = ({
   deleteAdHandler: (id: number) => void;
 }) => {
   if (adminAds.length === 0) {
-    return <Typography align="center">No ads available.</Typography>;
+    return (
+      <Typography variant={"body2"} color={"textSecondary"} align="center">
+        No ads yet.
+      </Typography>
+    );
   }
 
   return (

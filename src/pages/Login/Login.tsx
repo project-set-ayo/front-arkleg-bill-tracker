@@ -10,6 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import logo from "../../assets/images/arkleg-mono.png";
 import useLogin from "../../hooks/useLogin";
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
@@ -52,9 +53,15 @@ const Login = () => {
           p: 4,
         }}
       >
-        <Typography variant="h4" sx={{ textAlign: "center" }}>
-          Login
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <img src={logo} alt="Logo" width={180} height={"auto"} />
+        </Box>
 
         {errors.non_field_errors && (
           <Alert severity="error">{errors.non_field_errors}</Alert>
