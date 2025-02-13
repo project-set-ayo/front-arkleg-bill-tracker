@@ -10,7 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import logo from "../../assets/images/arkleg-mono.png";
+import logo from "../../assets/images/arkleg-color.png";
 import useLogin from "../../hooks/useLogin";
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
@@ -60,7 +60,7 @@ const Login = () => {
             alignItems: "center",
           }}
         >
-          <img src={logo} alt="Logo" width={180} height={"auto"} />
+          <img src={logo} alt="Logo" width={220} height={"auto"} />
         </Box>
 
         {errors.non_field_errors && (

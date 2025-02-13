@@ -10,7 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import useRegister from "../../hooks/useRegister";
-import logo from "../../assets/images/arkleg-mono.png";
+import logo from "../../assets/images/arkleg-color.png";
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
@@ -63,7 +63,7 @@ const Register: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <img src={logo} alt="Logo" width={180} height={"auto"} />
+          <img src={logo} alt="Logo" width={220} height={"auto"} />
         </Box>
 
         {successMessage && <Alert severity="success">{successMessage}</Alert>}
