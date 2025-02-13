@@ -10,7 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import logo from "../../assets/images/arkleg-color.png";
+import logo from "../../assets/images/arkleg-mono.png";
 import useLogin from "../../hooks/useLogin";
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";

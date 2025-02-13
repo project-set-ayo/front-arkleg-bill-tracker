@@ -15,7 +15,7 @@ import {
 import { Home, Person, Gavel } from "@mui/icons-material";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import logo from "../assets/images/arkleg-color.png";
+import logo from "../assets/images/arkleg-mono.png";
 
 // Elevation on scroll function
 interface ElevationScrollProps {
@@ -85,8 +85,8 @@ const Navigation: React.FC<ElevationScrollProps> = (props) => {
                 sx={{ width: "100%" }}
               >
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Button component={Link} to="/" sx={{ p: 0, mr: 2 }}>
-                    <img src={logo} alt="Logo" width={120} height={"auto"} />
+                  <Button component={Link} to="/" sx={{ p: 1, mr: 2 }}>
+                    <img src={logo} alt="Logo" width={100} height={"auto"} />
                   </Button>
                   <Typography
                     variant="h6"

@@ -10,7 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import useRegister from "../../hooks/useRegister";
-import logo from "../../assets/images/arkleg-color.png";
+import logo from "../../assets/images/arkleg-mono.png";
 import EmailInput from "../../components/EmailInput";
 import PasswordInput from "../../components/PasswordInput";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
