@@ -16,6 +16,7 @@ const FEED_URLS = [
 
 // Keywords for Filtering Relevant News
 const KEYWORDS = [
+  "Arkansas",
   "Arkansas Legislature",
   "Legislature",
   "General Assembly",
@@ -54,7 +55,7 @@ export default function useRssFeeds(page: number, limit: number) {
       try {
         // Fetch all feeds in parallel
         const feedRequests = FEED_URLS.map((url) =>
-          axios.get(`${PROXY_URL}${encodeURIComponent(url)}`)
+          axios.get(`${PROXY_URL}${encodeURIComponent(url)}`),
         );
         const responses = await Promise.all(feedRequests);
 
@@ -64,8 +65,8 @@ export default function useRssFeeds(page: number, limit: number) {
             const filteredArticles = response.data.items
               .filter((item: any) =>
                 KEYWORDS.some((keyword) =>
-                  item.title?.toLowerCase().includes(keyword.toLowerCase())
-                )
+                  item.title?.toLowerCase().includes(keyword.toLowerCase()),
+                ),
               )
               .map((item: any) => ({
                 title: item.title || "No title",
@@ -81,14 +82,14 @@ export default function useRssFeeds(page: number, limit: number) {
         // sort articles by pubDate (newest first)
         allArticles.sort(
           (a, b) =>
-            new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
+            new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime(),
         );
         // calculate pagination
         setTotalPages(Math.ceil(allArticles.length / limit));
 
         const paginatedArticles = allArticles.slice(
           (page - 1) * limit,
-          page * limit
+          page * limit,
         );
 
         setArticles(paginatedArticles);
