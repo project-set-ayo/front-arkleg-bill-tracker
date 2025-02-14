@@ -8,6 +8,7 @@ import {
   TextField,
   Button,
   Alert,
+  Typography,
 } from "@mui/material";
 import { useFormSaveState } from "../hooks/useFormSaveState";
 import { useBillInteraction } from "../hooks/useBillInteraction";
@@ -29,6 +30,10 @@ const BillInteractionForm: React.FC<BillInteractionFormProps> = ({
 
   return (
     <Box>
+      <Typography variant="h5" gutterBottom>
+        Your Grading
+      </Typography>
+
       <FormControl>
         <FormLabel>Stance</FormLabel>
         <RadioGroup

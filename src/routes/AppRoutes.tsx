@@ -7,6 +7,7 @@ import ConfirmEmail from "../pages/ConfirmEmail/ConfirmEmail";
 import PasswordResetConfirm from "../pages/PasswordResetConfirm/PasswordResetConfirm";
 import PasswordResetRequest from "../pages/PasswordResetRequest/PasswordResetRequest";
 import Login from "../pages/Login/Login";
+import SessionPage from "../pages/SessionPage/SessionPage";
 import BillListing from "../pages/BillListing/BillListing";
 import BillDetail from "../pages/BillDetail/BillDetail";
 import UserSettings from "../pages/UserSettings";
@@ -19,7 +20,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <App /> },
       { path: "user", element: <UserSettings /> },
-      { path: "bill", element: <BillListing /> },
+      //{ path: "bill", element: <BillListing /> },
+      { path: "bill", element: <SessionPage /> },
       { path: "bill/:billId", element: <BillDetail /> },
     ],
   },

@@ -44,19 +44,19 @@ const BillDetail: React.FC = () => {
           {/* Bill Details Section */}
           <Grid container spacing={2} size={{ xs: 12, md: 9 }}>
             <Grid size={{ xs: 12, md: 12 }}>
-              <Paper elevation={0} sx={{ p: 2 }}>
+              <Box sx={{ m: 2 }}>
                 <Typography variant="h5" fontWeight={"bold"}>
                   {billInfo.bill_number}
                 </Typography>
 
                 <Typography variant="h5">{billInfo.title}</Typography>
-              </Paper>
+              </Box>
             </Grid>
 
             {/* Bill Description & PDF Viewer */}
             <Grid container spacing={2} size={{ xs: 12, md: 8 }}>
               <Grid size={{ xs: 12, md: 12 }}>
-                <Paper elevation={1} sx={{ p: 2 }}>
+                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
                   <Typography variant="body1" gutterBottom>
                     {billInfo.description}
                   </Typography>
@@ -68,7 +68,7 @@ const BillDetail: React.FC = () => {
               </Grid>
 
               <Grid size={{ xs: 12, md: 12 }}>
-                <Paper elevation={1} sx={{ p: 2 }}>
+                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
                   {user?.is_admin ? (
                     <AdminBillUpdateForm billId={billId} />
                   ) : (
@@ -80,7 +80,7 @@ const BillDetail: React.FC = () => {
 
             {/* Bill Calendar Events */}
             <Grid size={{ xs: 12, md: 4 }}>
-              <Paper elevation={1} sx={{ p: 2 }}>
+              <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
                 <Typography variant="h6">Bill Upcoming Events</Typography>
                 <List>
                   {billInfo.calendar.map((event) => (
@@ -103,7 +103,7 @@ const BillDetail: React.FC = () => {
 
           {/* Stance & Note Interaction */}
           <Grid size={{ xs: 12 }}>
-            <Paper elevation={1} sx={{ p: 2 }}>
+            <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
               <BillInteractionForm legiscanBillId={billId} />
             </Paper>
           </Grid>
