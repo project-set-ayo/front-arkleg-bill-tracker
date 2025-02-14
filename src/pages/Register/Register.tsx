@@ -8,6 +8,7 @@ import {
   Alert,
   CircularProgress,
   Box,
+  TextField,
 } from "@mui/material";
 import useRegister from "../../hooks/useRegister";
 import logo from "../../assets/images/arkleg-mono.png";
@@ -19,6 +20,8 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
   const { handleRegister, errors, successMessage, isLoading } = useRegister();
   const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
     email: "",
     password1: "",
     password2: "",
@@ -31,7 +34,13 @@ const Register: React.FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    handleRegister(formData.email, formData.password1, formData.password2);
+    handleRegister(
+      formData.first_name,
+      formData.last_name,
+      formData.email,
+      formData.password1,
+      formData.password2,
+    );
   };
 
   return (
@@ -70,6 +79,26 @@ const Register: React.FC = () => {
         {errors.non_field_errors && (
           <Alert severity="error">{errors.non_field_errors}</Alert>
         )}
+
+        {/* First Name & Last Name Inputs */}
+        <TextField
+          label="first name"
+          name="first_name"
+          value={formData.first_name}
+          onChange={handleInputChange}
+          error={Boolean(errors.first_name)}
+          helperText={errors.first_name}
+          fullWidth
+        />
+        <TextField
+          label="last name"
+          name="last_name"
+          value={formData.last_name}
+          onChange={handleInputChange}
+          error={Boolean(errors.last_name)}
+          helperText={errors.last_name}
+          fullWidth
+        />
 
         <EmailInput
           name="email"

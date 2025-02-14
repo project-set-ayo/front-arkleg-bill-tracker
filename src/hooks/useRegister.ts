@@ -7,6 +7,8 @@ const useRegister = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async (
+    first_name: string,
+    last_name: string,
     email: string,
     password1: string,
     password2: string,
@@ -17,6 +19,8 @@ const useRegister = () => {
 
     try {
       const response = await apiWithoutAuth.post("/auth/register/", {
+        first_name,
+        last_name,
         email,
         password1,
         password2,

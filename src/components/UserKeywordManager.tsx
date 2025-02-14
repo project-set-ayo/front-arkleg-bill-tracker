@@ -73,10 +73,15 @@ const UserKeywordManager: React.FC = () => {
         Tracked Keywords
       </Typography>
 
+      <Typography variant="body2" color="textSecondary" gutterBottom>
+        Bills matching saved keywords will appear under Matching Bills on your
+        home page.
+      </Typography>
+
       {/* Add Keyword Input */}
       <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
         <TextField
-          label="New Keyword"
+          label="New Keyword (e.g medicaid, tax)"
           value={newKeyword}
           onChange={(e) => setNewKeyword(e.target.value)}
           fullWidth

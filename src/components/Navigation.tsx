@@ -16,6 +16,7 @@ import { Home, Person, Gavel } from "@mui/icons-material";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import logo from "../assets/images/arkleg-mono.png";
+import useUserProfile from "../hooks/useUserProfile"; // Import the user profile hook
 
 // Elevation on scroll function
 interface ElevationScrollProps {
@@ -40,6 +41,7 @@ const Navigation: React.FC<ElevationScrollProps> = (props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Detect mobile view
   const location = useLocation(); // Get current path for BottomNavigation selection
+  const { user } = useUserProfile(); // Get user profile
 
   return (
     <>
@@ -66,7 +68,7 @@ const Navigation: React.FC<ElevationScrollProps> = (props) => {
             value="/"
           />
           <BottomNavigationAction
-            label="User"
+            label={user.full_name}
             icon={<Person />}
             component={Link}
             to="/user"
@@ -79,11 +81,12 @@ const Navigation: React.FC<ElevationScrollProps> = (props) => {
           <AppBar position="fixed" color="default">
             <Toolbar>
               <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
                 sx={{ width: "100%" }}
               >
+                {/* Logo and Title */}
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Button component={Link} to="/" sx={{ p: 1, mr: 2 }}>
                     <img src={logo} alt="Logo" width={100} height={"auto"} />
@@ -96,16 +99,36 @@ const Navigation: React.FC<ElevationScrollProps> = (props) => {
                   </Typography>
                 </Box>
 
-                <Box sx={{ display: "flex" }}>
+                {/* Navigation and User Info */}
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Button color="inherit" component={Link} to="/">
                     <Home />
                   </Button>
                   <Button color="inherit" component={Link} to="/bill">
                     <Gavel />
                   </Button>
-                  <IconButton color="inherit" component={Link} to="/user">
+
+                  {/* User Icon */}
+                  <Button
+                    component={Link}
+                    to="/user"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      textTransform: "none",
+                      color: "inherit",
+                      borderRadius: 2,
+                      "&:hover": { bgcolor: "action.hover" },
+                    }}
+                  >
                     <Person />
-                  </IconButton>
+                    {user?.full_name && (
+                      <Typography variant="body1" fontWeight="bold">
+                        {user.full_name}
+                      </Typography>
+                    )}
+                  </Button>
                 </Box>
               </Box>
             </Toolbar>

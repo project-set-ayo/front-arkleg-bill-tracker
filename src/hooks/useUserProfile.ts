@@ -3,13 +3,11 @@ import { api } from "../utils/axios";
 
 interface UserProfile {
   email: string;
+  first_name: string;
+  last_name: string;
+  full_name: string;
   phone_number: string;
   is_admin: boolean;
-}
-
-interface ProfileErrors {
-  phone_number?: string;
-  non_field_errors?: string;
 }
 
 export default function useUserProfile() {

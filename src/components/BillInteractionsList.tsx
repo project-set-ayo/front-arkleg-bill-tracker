@@ -7,16 +7,10 @@ import {
   ListItem,
   ListItemText,
   Chip,
-  Avatar,
   Pagination,
 } from "@mui/material";
 import useBillInteractions from "../hooks/useBillInteractions";
-import {
-  CheckCircle,
-  Cancel,
-  Visibility,
-  InfoOutlined,
-} from "@mui/icons-material";
+import { CheckCircle, Cancel, Visibility } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 // Define colors and icons for each stance
@@ -31,8 +25,10 @@ const ITEMS_PER_PAGE = 5; // ✅ Controls number of interactions per page
 const BillInteractionsList: React.FC = () => {
   const billInteractions = useBillInteractions();
   const [page, setPage] = useState(1);
+  const HELP_TEXT =
+    "You can select bills to grade and monitor through the individual bill's detail page. From Bill Search or Tracked Keywords, click on a bill number to begin.";
 
-  // ✅ Pagination Logic
+  // Pagination Logic
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
   console.log("billInteractions:", billInteractions);
   const paginatedInteractions = billInteractions.slice(
@@ -48,11 +44,16 @@ const BillInteractionsList: React.FC = () => {
           Monitored Bills
         </Typography>
 
+        {billInteractions.length > 0 ? (
+          <Typography variant="body2" color="textSecondary">
+            {HELP_TEXT}
+          </Typography>
+        ) : null}
+
         {billInteractions.length === 0 ? (
           <Box display="flex" flexDirection="column" alignItems="center" py={4}>
-            <InfoOutlined sx={{ fontSize: 48, color: "grey.500" }} />
             <Typography variant="body1" color="textSecondary">
-              No bill interactions yet. Engage with bills to track them here.
+              {HELP_TEXT}
             </Typography>
           </Box>
         ) : (
@@ -65,22 +66,10 @@ const BillInteractionsList: React.FC = () => {
                   key={interaction.id}
                   divider
                   sx={{
-                    minHeight: 80, // ✅ Ensures each item has a fixed height
+                    minHeight: 80, // Ensures each item has a fixed height
                     alignItems: "center",
                   }}
                 >
-                  {/* Stance Avatar */}
-                  {/* 
-                  <Avatar
-                    sx={{
-                      bgcolor: stanceColors[interaction.stance].color,
-                      mr: 2,
-                    }}
-                  >
-                    {stanceColors[interaction.stance].icon}
-                  </Avatar>
-                  */}
-
                   {/* Bill Information */}
                   <ListItemText
                     primary={
@@ -118,7 +107,7 @@ const BillInteractionsList: React.FC = () => {
               ))}
             </List>
 
-            {/* ✅ Pagination Controls */}
+            {/* Pagination Controls */}
             {totalPages > 1 && (
               <Box display="flex" justifyContent="center" mt={2}>
                 <Pagination

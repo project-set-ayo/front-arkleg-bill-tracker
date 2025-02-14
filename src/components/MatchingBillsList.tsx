@@ -37,7 +37,7 @@ const MatchingBillsList: React.FC = () => {
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
   const paginatedBills = filteredBills.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
   const totalPages = Math.ceil(filteredBills.length / ITEMS_PER_PAGE);
 
@@ -46,6 +46,10 @@ const MatchingBillsList: React.FC = () => {
       <Paper elevation={1} sx={{ width: "100%", p: 3, borderRadius: 3 }}>
         <Typography variant="h5" gutterBottom>
           Matching Bills
+        </Typography>
+
+        <Typography variant="body2" color="textSecondary" gutterBottom>
+          Save the keywords you want to track on your profile page.
         </Typography>
 
         {/* Keyword Filter Dropdown */}

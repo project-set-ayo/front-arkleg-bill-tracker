@@ -14,11 +14,29 @@ const SessionBillList = ({ sessionId }: { sessionId: number }) => {
 
     return (
       bill.number.toLowerCase().includes(query) || // Match bill number (e.g., "HB123")
+      // single-letter
       (query === "hb" && bill.number.startsWith("HB")) || // House Bills
       (query === "sb" && bill.number.startsWith("SB")) || // Senate Bills
       (query === "hr" && bill.number.startsWith("HR")) || // House Resolutions
       (query === "sr" && bill.number.startsWith("SR")) || // Senate Resolutions
-      (query === "sjr" && bill.number.startsWith("SJR")) // Senate Joint Resolutions
+      (query === "hjr" && bill.number.startsWith("HJR")) || // House Joint Resolutions
+      (query === "sjr" && bill.number.startsWith("SJR")) || // Senate Joint Resolutions
+      // full-word
+      // chamber
+      (query === "house" && bill.number.includes("H")) || // House
+      (query === "senate" && bill.number.includes("S")) || // Senate
+      // type
+      (query === "bill" && bill.number.includes("B")) || // Bills
+      (query === "resolution" && bill.number.includes("R")) || // Resolutions
+      ((query === "joint resolution" || query === "joint") &&
+        bill.number.includes("JR")) || // Joint Resolutions
+      // compound: chamber-type
+      (query === "house bill" && bill.number.startsWith("HB")) || // House Bills
+      (query === "senate bill" && bill.number.startsWith("SB")) || // Senate Bills
+      (query === "house resolution" && bill.number.startsWith("HR")) || // House Resolutions
+      (query === "senate resolution" && bill.number.startsWith("SR")) || // Senate Resolutions
+      (query === "house joint resolution" && bill.number.startsWith("HJR")) || // House Joint Resolutions
+      (query === "senate joint resolution" && bill.number.startsWith("SJR")) // Senate Joint Resolutions
     );
   });
 
@@ -27,7 +45,7 @@ const SessionBillList = ({ sessionId }: { sessionId: number }) => {
       {/* Search Input */}
       <TextField
         fullWidth
-        label="Filter Bills (e.g by Number: SR1..., Chamber: H/S, and Type: B/R/JR)"
+        label="Filter bills by bill number, chamber (House/Senate) or type (bill/resolution/joint resolution)"
         variant="outlined"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}

@@ -20,16 +20,26 @@ const UserProfileManager: React.FC = () => {
 
   const { formState, handleChange, handleSave, hasChanges, isSaving } =
     useFormSaveState(
-      { phone_number: user?.phone_number || "" },
+      {
+        first_name: user?.first_name || "",
+        last_name: user?.last_name || "",
+        phone_number: user?.phone_number || "",
+      },
       async (data) => {
+        const updatedData: Record<string, string> = {};
+
         if (data.phone_number) {
-          const formattedPhoneNumber = data.phone_number.startsWith("+")
+          updatedData.phone_number = data.phone_number.startsWith("+")
             ? data.phone_number
             : `+${data.phone_number}`;
-          await updateProfile({ phone_number: formattedPhoneNumber });
         } else {
-          await updateProfile({ phone_number: "" });
+          updatedData.phone_number = "";
         }
+
+        updatedData.first_name = data.first_name;
+        updatedData.last_name = data.last_name;
+
+        await updateProfile(updatedData);
       },
     );
 
@@ -46,6 +56,7 @@ const UserProfileManager: React.FC = () => {
         <Alert severity="error">{errors.non_field_errors}</Alert>
       )}
 
+      {/* Email (Readonly) */}
       <TextField
         label="Email"
         value={user?.email || ""}
@@ -54,8 +65,32 @@ const UserProfileManager: React.FC = () => {
         disabled
       />
 
+      {/* First Name */}
+      <TextField
+        label="First Name"
+        name="first_name"
+        value={formState.first_name}
+        onChange={handleChange}
+        error={Boolean(errors.first_name)}
+        helperText={errors.first_name}
+        fullWidth
+        margin="normal"
+      />
+
+      {/* Last Name */}
+      <TextField
+        label="Last Name"
+        name="last_name"
+        value={formState.last_name}
+        onChange={handleChange}
+        error={Boolean(errors.last_name)}
+        helperText={errors.last_name}
+        fullWidth
+        margin="normal"
+      />
+
       {/* Phone Number Input with Clear Icon */}
-      <Box sx={{ position: "relative" }}>
+      <Box sx={{ position: "relative", mt: 2 }}>
         <PhoneInput
           country="us"
           preferredCountries={["us"]}
