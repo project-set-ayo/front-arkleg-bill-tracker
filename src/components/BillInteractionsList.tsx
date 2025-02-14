@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 
 // Define colors and icons for each stance
 const stanceColors: Record<string, { color: string; icon: JSX.Element }> = {
-  approve: { color: "success", icon: <CheckCircle color="success" /> },
+  support: { color: "success", icon: <CheckCircle color="success" /> },
   oppose: { color: "error", icon: <Cancel color="error" /> },
   watch: { color: "warning", icon: <Visibility color="warning" /> },
 };

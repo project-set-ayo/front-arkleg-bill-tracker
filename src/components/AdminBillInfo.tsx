@@ -14,7 +14,7 @@ const stanceColors: Record<
   string,
   { label: string; color: "success" | "error" | "warning" }
 > = {
-  approve: { label: "Approved", color: "success" },
+  support: { label: "Support", color: "success" },
   oppose: { label: "Opposed", color: "error" },
   watch: { label: "Watched", color: "warning" },
 };
