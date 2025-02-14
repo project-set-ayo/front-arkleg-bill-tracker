@@ -79,9 +79,9 @@ const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
               row
             >
               <FormControlLabel
-                value="approve"
+                value="support"
                 control={<Radio />}
-                label="Approve"
+                label="Support"
               />
               <FormControlLabel
                 value="oppose"

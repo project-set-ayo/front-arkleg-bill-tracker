@@ -3,7 +3,7 @@ import { api } from "../utils/axios";
 
 interface AdminInfo {
   admin_note: string;
-  admin_stance: "approve" | "oppose" | "watch" | null;
+  admin_stance: "support" | "oppose" | "watch" | null;
   admin_expanded_analysis_url: string;
 }
 
@@ -11,7 +11,7 @@ interface UserInfo {
   legiscan_bill_id: number;
   bill_number: string;
   bill_title: string;
-  stance: "approve" | "oppose" | "watch" | null;
+  stance: "support" | "oppose" | "watch" | null;
   note: string;
 }
 

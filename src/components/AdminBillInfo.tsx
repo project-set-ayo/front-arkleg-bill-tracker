@@ -5,7 +5,7 @@ import PdfViewer from "./PdfViewer"; // ✅ Import existing PDF viewer component
 interface AdminBillInfoProps {
   adminInfo: {
     admin_note: string;
-    admin_stance: "approve" | "oppose" | "watch" | null;
+    admin_stance: "support" | "oppose" | "watch" | null;
     admin_expanded_analysis_url: string;
   } | null;
 }

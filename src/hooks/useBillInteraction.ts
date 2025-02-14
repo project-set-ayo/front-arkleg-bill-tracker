@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { api } from "../utils/axios";
 
 interface BillInteraction {
-  stance: "approve" | "oppose" | "watch";
+  stance: "support" | "oppose" | "watch";
   note: string;
 }
 
