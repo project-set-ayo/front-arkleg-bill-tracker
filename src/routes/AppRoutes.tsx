@@ -8,6 +8,7 @@ import PasswordResetConfirm from "../pages/PasswordResetConfirm/PasswordResetCon
 import PasswordResetRequest from "../pages/PasswordResetRequest/PasswordResetRequest";
 import Login from "../pages/Login/Login";
 import SessionPage from "../pages/SessionPage/SessionPage";
+import TagSearchPage from "../pages/TagSearchPage/TagSearchPage";
 import BillListing from "../pages/BillListing/BillListing";
 import BillDetail from "../pages/BillDetail/BillDetail";
 import UserSettings from "../pages/UserSettings";
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "user", element: <UserSettings /> },
       //{ path: "bill", element: <BillListing /> },
       { path: "bill", element: <SessionPage /> },
+      { path: "tag", element: <TagSearchPage /> },
       { path: "bill/:billId", element: <BillDetail /> },
     ],
   },

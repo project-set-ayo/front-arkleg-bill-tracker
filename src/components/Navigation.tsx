@@ -4,7 +4,6 @@ import {
   Toolbar,
   Box,
   Typography,
-  IconButton,
   Button,
   BottomNavigation,
   BottomNavigationAction,
@@ -13,6 +12,7 @@ import {
   CssBaseline,
 } from "@mui/material";
 import { Home, Person, Gavel } from "@mui/icons-material";
+import TagIcon from "@mui/icons-material/Label";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import logo from "../assets/images/arkleg-mono.png";
@@ -54,13 +54,6 @@ const Navigation: React.FC<ElevationScrollProps> = (props) => {
           sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1000 }}
         >
           <BottomNavigationAction
-            label="Bills"
-            icon={<Gavel />}
-            component={Link}
-            to="/bill"
-            value="/bill"
-          />
-          <BottomNavigationAction
             label="Home"
             icon={<Home />}
             component={Link}
@@ -68,7 +61,21 @@ const Navigation: React.FC<ElevationScrollProps> = (props) => {
             value="/"
           />
           <BottomNavigationAction
-            label={user.full_name}
+            label="Bills"
+            icon={<Gavel />}
+            component={Link}
+            to="/bill"
+            value="/bill"
+          />
+          <BottomNavigationAction
+            label="Tags"
+            icon={<TagIcon />}
+            component={Link}
+            to="/tag"
+            value="/tag"
+          />
+          <BottomNavigationAction
+            label={user?.full_name}
             icon={<Person />}
             component={Link}
             to="/user"
@@ -106,6 +113,9 @@ const Navigation: React.FC<ElevationScrollProps> = (props) => {
                   </Button>
                   <Button color="inherit" component={Link} to="/bill">
                     <Gavel />
+                  </Button>
+                  <Button color="inherit" component={Link} to="/tag">
+                    <TagIcon />
                   </Button>
 
                   {/* User Icon */}

@@ -63,7 +63,7 @@ const TagFilterBillList = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, margin: "auto", mt: 4 }}>
+    <Box sx={{ p: 2 }}>
       {/* Tag Search Input */}
       <TextField
         label="Search Tags"
@@ -72,7 +72,7 @@ const TagFilterBillList = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Type to search... (Press Tab to select)"
+        placeholder="Search by tags (e.g medicaid, tax)"
         slotProps={{
           input: {
             startAdornment: (
@@ -127,7 +127,9 @@ const TagFilterBillList = () => {
           <Box sx={{ textAlign: "center", mt: 4 }}>
             <TagIcon sx={{ fontSize: 50, color: "gray" }} />
             <Typography variant="body1" color="textSecondary">
-              No tags selected. Please select a tag to filter bills.
+              Site administrators monitor and grade bills, often with linked
+              indepth analysis. Search by administrator's tags to engage with
+              analytics.
             </Typography>
           </Box>
         ) : (

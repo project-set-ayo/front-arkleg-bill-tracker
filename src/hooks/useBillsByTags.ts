@@ -29,11 +29,15 @@ export function useBillsByTags(selectedTags: string[]) {
       try {
         const query = selectedTags.join(",");
         const response = await api.get<Bill[]>(
-          `/bill/search-by-tags/?tags=${query}`
+          `/bill/search-by-tags/?tags=${query}`,
         );
         setBills(response.data);
       } catch (err: any) {
-        setError(err.response?.data?.error || "Failed to fetch bills");
+        if (err.response?.status === 404) {
+          setBills([]);
+        } else {
+          setError(err.response?.data?.error || "Failed to fetch bills");
+        }
       } finally {
         setLoading(false);
       }
