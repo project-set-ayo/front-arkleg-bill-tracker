@@ -1,22 +1,16 @@
 import React from "react";
-import {
-  Box,
-  Paper,
-  Typography,
-  CircularProgress,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
+import { Box, Paper, Typography, CircularProgress } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useParams } from "react-router-dom";
 import { useUserInfo } from "../../hooks/useUserInfo";
 import useBillDetail from "../../hooks/useBillDetail";
-import PdfViewer from "../../components/PdfViewer";
 import BillInteractionForm from "../../components/BillInteractionForm";
 import AdminBillInfo from "../../components/AdminBillInfo";
 import AdminBillUpdateForm from "../../components/AdminBillUpdateForm";
 import AdBanner from "../../components/AdBanner";
+import BillTextDocument from "../../components/BillTextDocument";
+import BillCalendarEvent from "../../components/BillCalendarEvent";
+import SponsorCard from "../../components/SponsorCard";
 
 const BillDetail: React.FC = () => {
   const { user, userLoading, userError } = useUserInfo();
@@ -38,74 +32,101 @@ const BillDetail: React.FC = () => {
   }
 
   return (
-    <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
+    <Box sx={{ width: "100%" }}>
       {billInfo ? (
-        <Grid container spacing={2} size={{ xs: 12, md: 9 }}>
+        <Grid container spacing={2} size={{ xs: 12 }}>
           {/* Bill Details Section */}
-          <Grid container spacing={2} size={{ xs: 12, md: 9 }}>
-            <Grid size={{ xs: 12, md: 12 }}>
+          <Grid container size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, md: 8 }}>
               <Box sx={{ m: 2 }}>
                 <Typography variant="h5" fontWeight={"bold"}>
                   {billInfo.bill_number}
                 </Typography>
-
                 <Typography variant="h5">{billInfo.title}</Typography>
               </Box>
             </Grid>
 
-            {/* Bill Description & PDF Viewer */}
-            <Grid container spacing={2} size={{ xs: 12, md: 8 }}>
-              <Grid size={{ xs: 12, md: 12 }}>
-                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
-                  <Typography variant="body1" gutterBottom>
-                    {billInfo.description}
-                  </Typography>
-                  <PdfViewer
-                    key={billInfo.texts[0]?.state_link}
-                    pdfUrl={billInfo.texts[0]?.state_link}
-                  />
-                </Paper>
-              </Grid>
-
-              <Grid size={{ xs: 12, md: 12 }}>
-                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
-                  {user?.is_admin ? (
-                    <AdminBillUpdateForm billId={billId} />
-                  ) : (
-                    <AdminBillInfo adminInfo={adminInfo} />
-                  )}
-                </Paper>
-              </Grid>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <AdBanner />
             </Grid>
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 12 }}>
+            <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+              <Typography variant="h6">Description</Typography>
+              <Typography sx={{ mt: 2 }} variant="body1" gutterBottom>
+                {billInfo.description}
+              </Typography>
+            </Paper>
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 8 }}>
+            <Box display="flex" flexDirection="column" gap={2}>
+              {/* Administrator Grading */}
+              <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                {user?.is_admin ? (
+                  <AdminBillUpdateForm billId={billId} />
+                ) : (
+                  <AdminBillInfo adminInfo={adminInfo} />
+                )}
+              </Paper>
+
+              {/* User Grading */}
+              <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                <BillInteractionForm legiscanBillId={billId} />
+              </Paper>
+            </Box>
+          </Grid>
+
+          <Grid container size={{ xs: 12, md: 4 }}>
+            {/* Bill Documents */}
+            {billInfo.texts.length > 0 && (
+              <Grid size={{ xs: 12, md: 12 }}>
+                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                  <Typography variant="h6">Documents</Typography>
+
+                  {billInfo.texts
+                    .sort(
+                      (a, b) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime(),
+                    )
+                    .map((text) => (
+                      <BillTextDocument key={text.doc_id} {...text} />
+                    ))}
+                </Paper>
+              </Grid>
+            )}
+
+            {/* Bill Sponsors */}
+            {billInfo.sponsors.length > 0 && (
+              <Grid size={{ xs: 12, md: 12 }}>
+                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                  <Typography variant="h6">Sponsors</Typography>
+
+                  {billInfo.sponsors.map((sponsor) => (
+                    <SponsorCard key={sponsor.people_id} {...sponsor} />
+                  ))}
+                </Paper>
+              </Grid>
+            )}
 
             {/* Bill Calendar Events */}
-            <Grid size={{ xs: 12, md: 4 }}>
-              <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
-                <Typography variant="h6">Bill Upcoming Events</Typography>
-                <List>
-                  {billInfo.calendar.map((event) => (
-                    <ListItem key={event.event_hash}>
-                      <ListItemText
-                        primary={event.description}
-                        secondary={event.date}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </Paper>
-            </Grid>
-          </Grid>
+            {billInfo.calendar.length > 0 && (
+              <Grid size={{ xs: 12, md: 12 }}>
+                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                  <Typography variant="h6">Calendar Events</Typography>
 
-          {/* Sidebar (Can be used for Ads or Other Content) */}
-          <Grid size={{ xs: 12, md: 3 }}>
-            <AdBanner />
-          </Grid>
-
-          {/* Stance & Note Interaction */}
-          <Grid size={{ xs: 12 }}>
-            <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
-              <BillInteractionForm legiscanBillId={billId} />
-            </Paper>
+                  {billInfo.calendar
+                    .sort(
+                      (a, b) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime(),
+                    )
+                    .map((event, index) => (
+                      <BillCalendarEvent key={index} {...event} />
+                    ))}
+                </Paper>
+              </Grid>
+            )}
           </Grid>
         </Grid>
       ) : (

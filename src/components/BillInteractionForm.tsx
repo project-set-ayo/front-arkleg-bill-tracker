@@ -31,7 +31,7 @@ const BillInteractionForm: React.FC<BillInteractionFormProps> = ({
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h6" gutterBottom>
         Your Grading
       </Typography>
 

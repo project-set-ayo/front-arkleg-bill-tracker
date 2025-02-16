@@ -1,22 +1,12 @@
 import { Box, Chip, Typography } from "@mui/material";
 import { Sponsor } from "../types/sponsor";
+import { getPartyStyle } from "../utils/style";
 
 interface SponsorCardProps {
   sponsor: Sponsor;
   isSelected?: boolean;
   onClick?: () => void;
 }
-
-const getPartyStyle = (party: string) => {
-  switch (party) {
-    case "R":
-      return { bgcolor: "#d92323", color: "white" }; // Republican Red
-    case "D":
-      return { bgcolor: "#1870f2", color: "white" }; // Democrat Blue
-    default:
-      return { bgcolor: "#808080", color: "white" }; // Neutral Gray for others
-  }
-};
 
 const SponsorBox: React.FC<SponsorCardProps> = ({
   sponsor,

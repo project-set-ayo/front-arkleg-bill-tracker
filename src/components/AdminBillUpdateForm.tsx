@@ -54,7 +54,7 @@ const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
 
   return (
     <>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h6" gutterBottom>
         {COMPONENT_LABEL}
       </Typography>
 
