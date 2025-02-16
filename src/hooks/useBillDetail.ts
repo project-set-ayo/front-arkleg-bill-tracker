@@ -13,6 +13,7 @@ interface UserInfo {
   bill_title: string;
   stance: "support" | "oppose" | "watch" | null;
   note: string;
+  ignore: boolean;
 }
 
 interface BillInfo {

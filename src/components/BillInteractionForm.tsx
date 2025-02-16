@@ -9,6 +9,7 @@ import {
   Button,
   Alert,
   Typography,
+  Switch,
 } from "@mui/material";
 import { useFormSaveState } from "../hooks/useFormSaveState";
 import { useBillInteraction } from "../hooks/useBillInteraction";
@@ -34,6 +35,32 @@ const BillInteractionForm: React.FC<BillInteractionFormProps> = ({
         Your Grading
       </Typography>
 
+      {/* Error Message */}
+      {error && <Alert severity="error">{error}</Alert>}
+
+      {/* Ignore Bill Toggle */}
+      <Box sx={{ my: 3 }}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={formState.ignore || false}
+              onChange={(e) =>
+                handleChange({
+                  target: { name: "ignore", value: e.target.checked },
+                } as any)
+              }
+              name="ignore"
+            />
+          }
+          label="Ignore Bill"
+        />
+        <Typography variant="caption" color="textSecondary">
+          If enabled, this bill will not be tracked for updates and will be
+          excluded from keyword alerts.
+        </Typography>
+      </Box>
+
+      {/* Stance Selection */}
       <FormControl>
         <FormLabel>Stance</FormLabel>
         <RadioGroup
@@ -52,6 +79,7 @@ const BillInteractionForm: React.FC<BillInteractionFormProps> = ({
         </RadioGroup>
       </FormControl>
 
+      {/* Note Input */}
       <Box sx={{ mt: 3 }}>
         <FormLabel>Note</FormLabel>
         <TextField
@@ -65,8 +93,7 @@ const BillInteractionForm: React.FC<BillInteractionFormProps> = ({
         />
       </Box>
 
-      {error && <Alert severity="error">{error}</Alert>}
-
+      {/* Save Button */}
       {hasChanges && (
         <Box sx={{ mt: 3 }}>
           <Button

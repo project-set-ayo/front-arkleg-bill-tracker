@@ -1,15 +1,12 @@
 import { useState, useEffect } from "react";
 import { api } from "../utils/axios";
-
-interface BillInteraction {
-  stance: "support" | "oppose" | "watch";
-  note: string;
-}
+import { BillInteraction } from "../types/billInteraction";
 
 export function useBillInteraction(legiscanBillId: string) {
   const [interaction, setInteraction] = useState<BillInteraction>({
     stance: "",
     note: "",
+    ignore: false,
   });
 
   const [loading, setLoading] = useState(false);
