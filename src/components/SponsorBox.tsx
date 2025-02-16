@@ -31,8 +31,10 @@ const SponsorBox: React.FC<SponsorCardProps> = ({
         alignItems: "center",
         cursor: onClick ? "pointer" : "default",
         gap: 1,
+        p: 1,
         borderRadius: 1,
         transition: "background-color 0.2s ease-in-out",
+        backgroundColor: isSelected ? "lightgray" : "",
       }}
     >
       <Chip
