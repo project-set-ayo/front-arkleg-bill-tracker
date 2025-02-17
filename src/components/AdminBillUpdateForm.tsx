@@ -108,15 +108,6 @@ const AdminBillUpdateForm: React.FC<ChildProps> = ({ billId }) => {
           fullWidth
         />
 
-        {/* Expanded Analysis URL */}
-        <TextField
-          label="Expanded Analysis URL"
-          name="admin_expanded_analysis_url"
-          value={formState.admin_expanded_analysis_url}
-          onChange={handleChange}
-          fullWidth
-        />
-
         {/* Tags */}
         <TextField
           label="Tags (comma-separated)"
