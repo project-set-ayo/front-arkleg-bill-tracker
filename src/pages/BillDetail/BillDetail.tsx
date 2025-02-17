@@ -8,10 +8,10 @@ import BillInteractionForm from "../../components/BillInteractionForm";
 import AdminBillInfo from "../../components/AdminBillInfo";
 import AdminBillUpdateForm from "../../components/AdminBillUpdateForm";
 import AdBanner from "../../components/AdBanner";
-import BillCalendarEvent from "../../components/BillCalendarEvent";
 import BillTextDocument from "../../components/BillTextDocument";
 import BillHistoryItem from "../../components/BillHistoryItem";
 import SponsorCard from "../../components/SponsorCard";
+import BillAnalysisUploader from "../../components/BillAnalysisUploader";
 
 const BillDetail: React.FC = () => {
   const { user, userLoading, userError } = useUserInfo();
@@ -68,9 +68,15 @@ const BillDetail: React.FC = () => {
                 {user?.is_admin ? (
                   <AdminBillUpdateForm billId={billId} />
                 ) : (
-                  <AdminBillInfo adminInfo={adminInfo} />
+                  <AdminBillInfo billId={billId} adminInfo={adminInfo} />
                 )}
               </Paper>
+
+              {user?.is_admin && (
+                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                  <BillAnalysisUploader billId={billId} />
+                </Paper>
+              )}
 
               {/* User Grading */}
               <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
@@ -124,24 +130,6 @@ const BillDetail: React.FC = () => {
                     )
                     .map((history, index) => (
                       <BillHistoryItem key={index} {...history} />
-                    ))}
-                </Paper>
-              </Grid>
-            )}
-
-            {/* Bill Calendar Events */}
-            {billInfo.calendar.length > 0 && (
-              <Grid size={{ xs: 12, md: 12 }}>
-                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
-                  <Typography variant="h6">Calendar Events</Typography>
-
-                  {billInfo.calendar
-                    .sort(
-                      (a, b) =>
-                        new Date(b.date).getTime() - new Date(a.date).getTime(),
-                    )
-                    .map((event, index) => (
-                      <BillCalendarEvent key={index} {...event} />
                     ))}
                 </Paper>
               </Grid>

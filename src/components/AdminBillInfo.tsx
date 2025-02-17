@@ -1,8 +1,9 @@
 import React from "react";
 import { Box, Typography, Chip } from "@mui/material";
-import PdfViewer from "./PdfViewer"; // ✅ Import existing PDF viewer component
+import BillAnalysisViewer from "./BillAnalysisViewer";
 
 interface AdminBillInfoProps {
+  billId: string;
   adminInfo: {
     admin_note: string;
     admin_stance: "support" | "oppose" | "watch" | null;
@@ -19,7 +20,7 @@ const stanceColors: Record<
   watch: { label: "Watched", color: "warning" },
 };
 
-const AdminBillInfo: React.FC<AdminBillInfoProps> = ({ adminInfo }) => {
+const AdminBillInfo: React.FC<AdminBillInfoProps> = ({ billId, adminInfo }) => {
   if (!adminInfo) return null; // If no admin data, return nothing
 
   return (
@@ -44,10 +45,7 @@ const AdminBillInfo: React.FC<AdminBillInfoProps> = ({ adminInfo }) => {
         {adminInfo.admin_note || "No admin notes available."}
       </Typography>
 
-      {/* Admin Expanded Analysis PDF */}
-      {adminInfo.admin_expanded_analysis_url && (
-        <PdfViewer pdfUrl={adminInfo.admin_expanded_analysis_url} />
-      )}
+      <BillAnalysisViewer billId={billId} />
     </Box>
   );
 };
