@@ -25,9 +25,13 @@ const AdBanner = () => {
 
   return (
     <Box width="100%" display="flex" justifyContent="center">
-      <Paper
-        elevation={0}
-        sx={{ width: "100%", maxWidth: 600, px: 2, textAlign: "center" }}
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 600,
+          px: 2,
+          textAlign: "center",
+        }}
       >
         <Link href={currentAd.link} target="_blank" rel="noopener noreferrer">
           <Box
@@ -46,7 +50,7 @@ const AdBanner = () => {
         <Typography variant="body1" mt={2} noWrap>
           {currentAd.title}
         </Typography>
-      </Paper>
+      </Box>
     </Box>
   );
 };
