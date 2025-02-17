@@ -29,11 +29,8 @@ const SponsorCard: React.FC<SponsorCardProps> = ({
       my={1}
       border="1px solid #ddd"
       borderRadius={2}
-      sx={{ backgroundColor: "#f9f9f9" }}
+      sx={{ backgroundColor: "#f9f9f9", justifyContent: "space-between" }}
     >
-      {/* Person Icon with Party Color */}
-      <Person fontSize="large" sx={{ color: iconColor }} />
-
       {/* Sponsor Info */}
       <Box>
         <Typography variant="body1" fontWeight="bold">
@@ -43,6 +40,9 @@ const SponsorCard: React.FC<SponsorCardProps> = ({
           {role} - {district}
         </Typography>
       </Box>
+
+      {/* Person Icon with Party Color */}
+      <Person fontSize="large" sx={{ color: iconColor, mr: 1 }} />
     </Box>
   );
 };

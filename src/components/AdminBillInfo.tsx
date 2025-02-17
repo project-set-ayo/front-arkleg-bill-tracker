@@ -23,7 +23,7 @@ const AdminBillInfo: React.FC<AdminBillInfoProps> = ({ adminInfo }) => {
   if (!adminInfo) return null; // If no admin data, return nothing
 
   return (
-    <Box sx={{ mt: 3 }}>
+    <Box>
       <Typography variant="h6" gutterBottom>
         Admin Analysis
       </Typography>
@@ -40,7 +40,7 @@ const AdminBillInfo: React.FC<AdminBillInfoProps> = ({ adminInfo }) => {
       )}
 
       {/* Admin Note */}
-      <Typography variant="body1" sx={{ mb: 2 }}>
+      <Typography variant="body1" sx={{ my: 2 }}>
         {adminInfo.admin_note || "No admin notes available."}
       </Typography>
 

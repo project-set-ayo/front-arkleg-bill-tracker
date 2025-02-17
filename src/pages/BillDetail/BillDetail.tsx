@@ -8,8 +8,9 @@ import BillInteractionForm from "../../components/BillInteractionForm";
 import AdminBillInfo from "../../components/AdminBillInfo";
 import AdminBillUpdateForm from "../../components/AdminBillUpdateForm";
 import AdBanner from "../../components/AdBanner";
-import BillTextDocument from "../../components/BillTextDocument";
 import BillCalendarEvent from "../../components/BillCalendarEvent";
+import BillTextDocument from "../../components/BillTextDocument";
+import BillHistoryItem from "../../components/BillHistoryItem";
 import SponsorCard from "../../components/SponsorCard";
 
 const BillDetail: React.FC = () => {
@@ -106,6 +107,24 @@ const BillDetail: React.FC = () => {
                   {billInfo.sponsors.map((sponsor) => (
                     <SponsorCard key={sponsor.people_id} {...sponsor} />
                   ))}
+                </Paper>
+              </Grid>
+            )}
+
+            {/* Bill History */}
+            {billInfo.history.length > 0 && (
+              <Grid size={{ xs: 12, md: 12 }}>
+                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                  <Typography variant="h6">Bill History</Typography>
+
+                  {billInfo.history
+                    .sort(
+                      (a, b) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime(), // Latest first
+                    )
+                    .map((history, index) => (
+                      <BillHistoryItem key={index} {...history} />
+                    ))}
                 </Paper>
               </Grid>
             )}
