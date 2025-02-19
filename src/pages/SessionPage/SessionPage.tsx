@@ -12,7 +12,6 @@ const SessionPage = () => {
   const { selectedLegSession, updateLegSession } = usePersistedLegSession();
   const [activeTab, setActiveTab] = useState(0);
 
-  // Detect if viewport is mobile
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm"),
   );

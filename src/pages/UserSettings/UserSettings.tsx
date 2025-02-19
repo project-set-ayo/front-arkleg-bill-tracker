@@ -1,12 +1,12 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Paper, Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import UserProfileManager from "../components/UserProfileManager";
-import UserKeywordManager from "../components/UserKeywordManager";
-import AdBanner from "../components/AdBanner";
-import AdminAdManager from "../components/AdminAdManager";
-import useUserProfile from "../hooks/useUserProfile";
-import useAds from "../hooks/useAds";
+import UserProfileManager from "../../components/UserProfileManager";
+import UserKeywordManager from "../../components/UserKeywordManager";
+import AdBanner from "../../components/AdBanner";
+import AdminAdManager from "../../components/AdminAdManager";
+import useUserProfile from "../../hooks/useUserProfile";
+import useAds from "../../hooks/useAds";
 
 const UserSettings: React.FC = () => {
   const { isAdmin } = useUserProfile();
@@ -18,10 +18,14 @@ const UserSettings: React.FC = () => {
       <Grid container spacing={2} size={{ xs: 12 }}>
         <Grid container size={{ xs: 12, md: hasAds ? 8 : 12 }}>
           <Grid size={{ xs: 12 }}>
-            <UserProfileManager />
+            <Paper elevation={1} sx={{ borderRadius: 3 }}>
+              <UserProfileManager />
+            </Paper>
           </Grid>
           <Grid size={{ xs: 12 }}>
-            <UserKeywordManager />
+            <Paper elevation={1} sx={{ borderRadius: 3 }}>
+              <UserKeywordManager />
+            </Paper>
           </Grid>
         </Grid>
 
@@ -31,7 +35,9 @@ const UserSettings: React.FC = () => {
 
         {isAdmin ? (
           <Grid size={{ xs: 12, md: 12 }}>
-            <AdminAdManager />
+            <Paper elevation={1} sx={{ borderRadius: 3 }}>
+              <AdminAdManager />
+            </Paper>
           </Grid>
         ) : null}
       </Grid>

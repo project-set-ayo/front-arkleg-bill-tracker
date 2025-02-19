@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useAds from "../hooks/useAds";
 import { Ad } from "../types/ad";
-import { Paper, Box, Typography, Link } from "@mui/material";
+import { Box, Typography, Link } from "@mui/material";
 
 const AdBanner = () => {
   const { ads } = useAds();
