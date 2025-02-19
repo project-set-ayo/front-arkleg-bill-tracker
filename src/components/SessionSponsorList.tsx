@@ -1,11 +1,20 @@
 import { useState } from "react";
-import { List, ListItem, Typography, TextField, Box } from "@mui/material";
+import {
+  List,
+  Box,
+  ListItem,
+  Typography,
+  TextField,
+  Autocomplete,
+} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import useLegSponsors from "../hooks/useLegSponsors";
 import SponsorBillList from "./SponsorBillList";
 import SponsorBox from "./SponsorBox";
 import { Sponsor } from "../types/sponsor";
 import { sortByKey } from "../utils/hof";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Theme } from "@mui/material/styles";
 
 const SessionSponsorList = ({ sessionId }: { sessionId: number }) => {
   const { sponsors, loading, error } = useLegSponsors(sessionId);
@@ -13,14 +22,56 @@ const SessionSponsorList = ({ sessionId }: { sessionId: number }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const sortSponsorsByNameAsc = sortByKey<Sponsor>("name", "asc");
 
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("sm"),
+  );
+
   // Filter sponsors based on search query (case insensitive)
   const filteredSponsors = sortSponsorsByNameAsc(sponsors).filter((sponsor) =>
     sponsor.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
+  if (isMobile) {
+    return (
+      <Box display="flex" flexDirection="column" gap={2}>
+        {/* Mobile Layout */}
+        <Box width={"100%"}>
+          {/* Autocomplete Dropdown */}
+          <Autocomplete
+            options={filteredSponsors}
+            getOptionLabel={(option) => option.name}
+            onChange={(_, newValue) => setSelectedSponsor(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Sponsor"
+                variant="outlined"
+              />
+            )}
+            sx={{ my: 1 }}
+          />
+        </Box>
+
+        {/* Sponsored Bills */}
+        {selectedSponsor && (
+          <Box width={"100%"}>
+            <Typography variant="subtitle1" fontWeight={"bold"}>
+              Bills sponsored by {selectedSponsor.name}
+            </Typography>
+
+            <SponsorBillList
+              sessionId={sessionId}
+              peopleId={selectedSponsor.people_id}
+            />
+          </Box>
+        )}
+      </Box>
+    );
+  }
+
   return (
     <Grid container spacing={2} sx={{ height: "100vh", overflow: "auto" }}>
-      {/* Sponsor List */}
+      {/* Desktop Layout */}
       <Grid size={{ xs: 12, sm: 5 }}>
         {/* Search Input */}
         <TextField
