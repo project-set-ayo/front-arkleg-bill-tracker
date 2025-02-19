@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Paper, Tabs, Tab, Container } from "@mui/material";
+import { Paper, Tabs, Tab, Container, useMediaQuery } from "@mui/material";
 import { Article, FindInPage, Person } from "@mui/icons-material";
+import { Theme } from "@mui/material/styles";
 import SessionList from "../../components/SessionList";
 import SessionBillList from "../../components/SessionBillList";
 import SessionSponsorList from "../../components/SessionSponsorList";
@@ -10,6 +11,11 @@ import TextSearchBills from "../../components/TextSearchBills";
 const SessionPage = () => {
   const { selectedLegSession, updateLegSession } = usePersistedLegSession();
   const [activeTab, setActiveTab] = useState(0);
+
+  // Detect if viewport is mobile
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("sm"),
+  );
 
   return (
     <Container
@@ -36,13 +42,21 @@ const SessionPage = () => {
             onChange={(_, newValue) => setActiveTab(newValue)}
             centered
           >
-            <Tab icon={<Article />} iconPosition="start" label="Bills" />
+            <Tab
+              icon={<Article />}
+              iconPosition="start"
+              label={isMobile ? undefined : "Bills"}
+            />
             <Tab
               icon={<FindInPage />}
               iconPosition="start"
-              label="Text Search"
+              label={isMobile ? undefined : "Text Search"}
             />
-            <Tab icon={<Person />} iconPosition="start" label="Sponsors" />
+            <Tab
+              icon={<Person />}
+              iconPosition="start"
+              label={isMobile ? undefined : "Sponsors"}
+            />
           </Tabs>
 
           <Paper elevation={1} sx={{ width: "100%", p: 3, borderRadius: 3 }}>
