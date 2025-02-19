@@ -43,6 +43,14 @@ const Navigation: React.FC<ElevationScrollProps> = (props) => {
   const location = useLocation(); // Get current path for BottomNavigation selection
   const { user } = useUserProfile(); // Get user profile
 
+  const truncateName = (name: string | undefined) => {
+    const MAX_NAME_LENGTH = 10;
+
+    return name && name.length > MAX_NAME_LENGTH
+      ? name.slice(0, MAX_NAME_LENGTH) + "…"
+      : name;
+  };
+
   return (
     <>
       <CssBaseline />
@@ -75,7 +83,19 @@ const Navigation: React.FC<ElevationScrollProps> = (props) => {
             value="/tag"
           />
           <BottomNavigationAction
-            label={user?.full_name}
+            label={
+              <Typography
+                variant="caption"
+                sx={{
+                  whiteSpace: "nowrap", // Prevents line breaks
+                  textAlign: "center", // Ensures text stays centered
+                  display: "block", // Ensures it stacks correctly
+                  width: "100%", // Expands to full width for proper centering
+                }}
+              >
+                {truncateName(user?.full_name)}
+              </Typography>
+            }
             icon={<Person />}
             component={Link}
             to="/user"
