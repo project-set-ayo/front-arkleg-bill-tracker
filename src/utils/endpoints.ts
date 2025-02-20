@@ -62,7 +62,6 @@ export const confirmEmail = async (
   key: string,
 ): Promise<ConfirmEmailResponse> => {
   try {
-    console.log("key: ", key);
     const response = await apiWithoutAuth.post<ConfirmEmailResponse>(
       "/auth/register/verify-email/",
       { key },
@@ -160,8 +159,6 @@ export const AuthenticateWithGoogle = async (
     );
     const { key } = response.data;
     Cookies.set("authToken", key, { expires: 7 });
-
-    console.log("authenticate with google - data: ", response.data);
     return response.data;
   } catch (error: any) {
     console.error(

@@ -13,7 +13,6 @@ const GoogleLoginButton = ({
 }: LoginProps) => {
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log("Access Token:", tokenResponse);
       await AuthenticateWithGoogle(tokenResponse.access_token);
       onSuccess();
     },
