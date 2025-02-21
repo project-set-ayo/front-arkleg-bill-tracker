@@ -22,9 +22,11 @@ const useAdminAds = () => {
     fetchAdminAds();
   }, [fetchAdminAds]);
 
-  const addAd = async (newAd: Omit<Ad, "id" | "is_active">) => {
+  const addAd = async (newAd: Ad) => {
     try {
-      const res = await api.post("/ads/", { ...newAd, is_active: true });
+      const res = await api.post("/ads/", newAd, {
+        headers: { "Content-Type": "multipart/form-data" }, // ✅ Ensure correct headers
+      });
       setAdminAds((prevAds) => [res.data, ...prevAds]);
       return { success: true }; // Indicate success
     } catch (err: any) {
