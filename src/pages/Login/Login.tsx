@@ -28,7 +28,7 @@ const Login = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    handleLogin(formData.email, formData.password);
+    handleLogin(formData.email.toLowerCase(), formData.password);
   };
 
   return (
