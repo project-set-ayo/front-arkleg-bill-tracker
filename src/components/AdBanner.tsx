@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
 import useAds from "../hooks/useAds";
 import { Ad } from "../types/ad";
-import { Box, Typography, Link } from "@mui/material";
 
-const AdBanner = () => {
-  const { ads } = useAds();
+import SquareAd from "./ads/SquareAd";
+import HorizontalAd from "./ads/HorizontalAd";
+import VerticalAd from "./ads/VerticalAd";
+
+type Style = "square" | "horizontal" | "vertical";
+
+const AdBanner = ({ style }: { style: Style }) => {
+  const { ads } = useAds(style);
   const [currentAd, setCurrentAd] = useState<Ad | null>(null);
 
   useEffect(() => {
-    if (ads.length === 0) return;
+    if (!ads.length) return;
 
     const changeAd = () => {
       const randomIndex = Math.floor(Math.random() * ads.length);
@@ -17,42 +22,23 @@ const AdBanner = () => {
 
     changeAd();
     const interval = setInterval(changeAd, 5000);
-
     return () => clearInterval(interval);
   }, [ads]);
 
   if (!currentAd) return null;
 
-  return (
-    <Box width="100%" display="flex" justifyContent="center">
-      <Box
-        sx={{
-          width: "100%",
-          maxWidth: 600,
-          px: 2,
-          textAlign: "center",
-        }}
-      >
-        <Link href={currentAd.link} target="_blank" rel="noopener noreferrer">
-          <Box
-            component="img"
-            src={currentAd.image}
-            alt={currentAd.title}
-            sx={{
-              width: "100%",
-              height: "auto",
-              maxHeight: 300, // Prevents oversized images
-              objectFit: "contain",
-              borderRadius: 2,
-            }}
-          />
-        </Link>
-        <Typography variant="body1" mt={2} noWrap>
-          {currentAd.title}
-        </Typography>
-      </Box>
-    </Box>
-  );
+  const commonProps = {
+    ad: currentAd,
+  };
+
+  switch (currentAd.style) {
+    case "horizontal":
+      return <HorizontalAd {...commonProps} />;
+    case "vertical":
+      return <VerticalAd {...commonProps} />;
+    default:
+      return <SquareAd {...commonProps} />;
+  }
 };
 
 export default AdBanner;

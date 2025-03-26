@@ -9,8 +9,9 @@ import useUserProfile from "../../hooks/useUserProfile";
 import useAds from "../../hooks/useAds";
 
 const UserSettings: React.FC = () => {
+  const AD_STYLE = "vertical";
+  const { ads } = useAds(AD_STYLE);
   const { isAdmin } = useUserProfile();
-  const { ads } = useAds();
   const hasAds = ads.length > 0;
 
   return (
@@ -30,7 +31,7 @@ const UserSettings: React.FC = () => {
         </Grid>
 
         <Grid size={{ xs: 12, md: 4 }}>
-          <AdBanner />
+          <AdBanner style={AD_STYLE} />
         </Grid>
 
         {isAdmin ? (

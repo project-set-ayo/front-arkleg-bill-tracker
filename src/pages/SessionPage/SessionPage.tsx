@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Paper, Tabs, Tab, Container, useMediaQuery } from "@mui/material";
+import { Box, Paper, Tabs, Tab, Container, useMediaQuery } from "@mui/material";
 import { Article, FindInPage, Person } from "@mui/icons-material";
 import { Theme } from "@mui/material/styles";
 import SessionList from "../../components/SessionList";
@@ -7,6 +7,7 @@ import SessionBillList from "../../components/SessionBillList";
 import SessionSponsorList from "../../components/SessionSponsorList";
 import usePersistedLegSession from "../../hooks/usePersistedLegSession";
 import TextSearchBills from "../../components/TextSearchBills";
+import AdBanner from "../../components/AdBanner";
 
 const SessionPage = () => {
   const { selectedLegSession, updateLegSession } = usePersistedLegSession();
@@ -25,6 +26,8 @@ const SessionPage = () => {
         flexDirection: "column",
       }}
     >
+      <AdBanner style="horizontal" />
+
       {/* Session List */}
       <Paper elevation={1} sx={{ p: 3, borderRadius: 3 }}>
         <SessionList

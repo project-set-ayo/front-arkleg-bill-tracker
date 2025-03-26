@@ -1,5 +1,6 @@
 import { Paper, Container } from "@mui/material";
 import TagFilterBillList from "../../components/TagFilterBillList";
+import AdBanner from "../../components/AdBanner";
 
 const TagSearchPage = () => {
   return (
@@ -11,6 +12,7 @@ const TagSearchPage = () => {
         flexDirection: "column",
       }}
     >
+      <AdBanner style="horizontal" />
       {/* Session List */}
       <Paper elevation={1} sx={{ p: 3, borderRadius: 3 }}>
         <TagFilterBillList />

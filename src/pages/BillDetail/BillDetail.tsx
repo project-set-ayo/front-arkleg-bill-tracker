@@ -48,7 +48,7 @@ const BillDetail: React.FC = () => {
             </Grid>
 
             <Grid size={{ xs: 12, md: 4 }}>
-              <AdBanner />
+              <AdBanner style="square" />
             </Grid>
           </Grid>
 

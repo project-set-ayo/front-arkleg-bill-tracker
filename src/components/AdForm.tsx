@@ -1,7 +1,17 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Box, TextField, Button, CircularProgress } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  CircularProgress,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControl,
+  FormHelperText,
+} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import AddIcon from "@mui/icons-material/Add";
 import AdImageUploader from "./AdImageUploader";
@@ -12,6 +22,7 @@ const schema = z.object({
   image: z.instanceof(File, { message: "Image file is required" }).nullable(),
   link: z.string().url("Invalid link URL"),
   weight: z.coerce.number().min(1, "Weight must be at least 1"),
+  style: z.enum(["square", "horizontal", "vertical"]),
 });
 
 const AdForm = ({
@@ -28,6 +39,7 @@ const AdForm = ({
       image: null,
       link: "",
       weight: 1,
+      style: "square",
     },
   });
 
@@ -45,6 +57,7 @@ const AdForm = ({
     formData.append("title", data.title);
     formData.append("link", data.link);
     formData.append("weight", data.weight.toString());
+    formData.append("style", data.style);
 
     if (data.image) {
       formData.append("image", data.image); // Ensure file is included
@@ -94,7 +107,27 @@ const AdForm = ({
                 helperText={errors.link?.message}
               />
             </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
+            <Grid size={{ xs: 12, sm: 4 }}>
+              <FormControl fullWidth error={!!errors.style}>
+                <InputLabel id="ad-style-label">Orientation/Style</InputLabel>
+                <Select
+                  labelId="ad-style-label"
+                  id="style"
+                  label="Orientation/Style"
+                  defaultValue="square"
+                  {...register("style")}
+                >
+                  <MenuItem value="square">Square</MenuItem>
+                  <MenuItem value="horizontal">Horizontal</MenuItem>
+                  <MenuItem value="vertical">Vertical</MenuItem>
+                </Select>
+                {errors.style && (
+                  <FormHelperText>{errors.style.message}</FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+
+            <Grid size={{ xs: 12, sm: 4 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -104,7 +137,7 @@ const AdForm = ({
                 helperText={errors.weight?.message}
               />
             </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <AdImageUploader />
               {errors.image && (
                 <Box mt={1} color="error.main">

@@ -3,6 +3,7 @@ export interface Ad {
   title: string;
   image: string;
   link: string;
+  style: "square" | "horizontal" | "vertical";
   weight: number;
   is_active: boolean;
   created?: string;

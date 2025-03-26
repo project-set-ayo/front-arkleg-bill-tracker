@@ -7,7 +7,8 @@ import AdBanner from "./components/AdBanner";
 import useAds from "./hooks/useAds";
 
 function App() {
-  const { ads } = useAds();
+  const AD_STYLE = "square";
+  const { ads } = useAds(AD_STYLE);
   const hasAds = ads.length > 0;
 
   return (
@@ -29,7 +30,7 @@ function App() {
         </Grid>
         {hasAds && (
           <Grid size={{ xs: 12, md: 3 }}>
-            <AdBanner />
+            <AdBanner style="square" />
           </Grid>
         )}
 
