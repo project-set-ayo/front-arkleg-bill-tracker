@@ -24,8 +24,11 @@ interface BillInfo {
   history: any[];
   votes: any[];
   calendar: any[];
+  amendments: any[];
   texts: any[];
   sponsors: any[];
+  status: string | number;
+  status_date: string;
 }
 
 export default function useBillDetail(legiscanBillId: string) {

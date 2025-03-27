@@ -1,5 +1,14 @@
 import React from "react";
-import { Box, Paper, Typography, CircularProgress } from "@mui/material";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Box,
+  Paper,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Grid from "@mui/material/Grid2";
 import { useParams } from "react-router-dom";
 import { useUserInfo } from "../../hooks/useUserInfo";
@@ -19,6 +28,47 @@ const BillDetail: React.FC = () => {
   const { billInfo, adminInfo, userInfo, loading, error } = useBillDetail(
     billId || "",
   );
+
+  const accordion_xs = {
+    margin: 0,
+    padding: 0,
+    borderRadius: 6,
+    boxShadow: "none",
+    border: "1px solid transparent",
+    "&::before": {
+      display: "none",
+    },
+  };
+
+  const drafts =
+    billInfo &&
+    billInfo.texts.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
+
+  const amendments =
+    billInfo &&
+    billInfo.amendments.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
+
+  const sponsors = billInfo && billInfo.sponsors;
+
+  const history_items =
+    billInfo &&
+    billInfo.history.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
+
+  const calendar_items =
+    billInfo &&
+    billInfo.calendar.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
+
+  const latest_history_item = history_items && history_items[0];
+
+  const latest_calendar_item = calendar_items && calendar_items[0];
 
   if (loading) {
     return <CircularProgress />;
@@ -54,15 +104,34 @@ const BillDetail: React.FC = () => {
 
           <Grid size={{ xs: 12, md: 12 }}>
             <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
-              <Typography variant="h6">Description</Typography>
+              <Typography variant="h6">Status</Typography>
               <Typography sx={{ mt: 2 }} variant="body1" gutterBottom>
-                {billInfo.description}
+                <p>
+                  Status: {billInfo.status} on {billInfo.status_date}
+                </p>
+                {latest_history_item && (
+                  <p>Action: {latest_history_item.action}</p>
+                )}
+                {latest_calendar_item && (
+                  <p>
+                    {latest_calendar_item.type}: {latest_calendar_item.date} in{" "}
+                    {latest_calendar_item.location}
+                  </p>
+                )}
               </Typography>
             </Paper>
           </Grid>
 
           <Grid size={{ xs: 12, md: 8 }}>
             <Box display="flex" flexDirection="column" gap={2}>
+              {/* Bill Description */}
+              <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                <Typography variant="h6">Description</Typography>
+                <Typography sx={{ mt: 2 }} variant="body1" gutterBottom>
+                  {billInfo.description}
+                </Typography>
+              </Paper>
+
               {/* Administrator Grading */}
               <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
                 {user?.is_admin ? (
@@ -87,53 +156,107 @@ const BillDetail: React.FC = () => {
 
           <Grid container size={{ xs: 12, md: 4 }}>
             {/* Bill Documents */}
-            {billInfo.texts.length > 0 && (
-              <Grid size={{ xs: 12, md: 12 }}>
-                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
-                  <Typography variant="h6">Documents</Typography>
+            <Box display="flex" flexDirection="column" gap={2}>
+              {drafts && (
+                <Grid size={{ xs: 12, md: 12 }}>
+                  <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                    <Accordion sx={{ ...accordion_xs }}>
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography variant="h6">
+                          Drafts ({drafts.length})
+                        </Typography>
+                      </AccordionSummary>
 
-                  {billInfo.texts
-                    .sort(
-                      (a, b) =>
-                        new Date(b.date).getTime() - new Date(a.date).getTime(),
-                    )
-                    .map((text) => (
-                      <BillTextDocument key={text.doc_id} {...text} />
-                    ))}
-                </Paper>
-              </Grid>
-            )}
+                      <AccordionDetails>
+                        {drafts
+                          .sort(
+                            (a, b) =>
+                              new Date(b.date).getTime() -
+                              new Date(a.date).getTime(),
+                          )
+                          .map((text) => (
+                            <BillTextDocument key={text.doc_id} {...text} />
+                          ))}
+                      </AccordionDetails>
+                    </Accordion>
+                  </Paper>
+                </Grid>
+              )}
 
-            {/* Bill Sponsors */}
-            {billInfo.sponsors.length > 0 && (
-              <Grid size={{ xs: 12, md: 12 }}>
-                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
-                  <Typography variant="h6">Sponsors</Typography>
+              {amendments && (
+                <Grid size={{ xs: 12, md: 12 }}>
+                  <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                    <Accordion sx={{ ...accordion_xs }}>
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography variant="h6">
+                          Amendments ({amendments.length})
+                        </Typography>
+                      </AccordionSummary>
 
-                  {billInfo.sponsors.map((sponsor) => (
-                    <SponsorCard key={sponsor.people_id} {...sponsor} />
-                  ))}
-                </Paper>
-              </Grid>
-            )}
+                      <AccordionDetails>
+                        {amendments
+                          .sort(
+                            (a, b) =>
+                              new Date(b.date).getTime() -
+                              new Date(a.date).getTime(),
+                          )
+                          .map((text) => (
+                            <BillTextDocument key={text.doc_id} {...text} />
+                          ))}
+                      </AccordionDetails>
+                    </Accordion>
+                  </Paper>
+                </Grid>
+              )}
 
-            {/* Bill History */}
-            {billInfo.history.length > 0 && (
-              <Grid size={{ xs: 12, md: 12 }}>
-                <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
-                  <Typography variant="h6">Bill History</Typography>
+              {/* Bill Sponsors */}
+              {sponsors && (
+                <Grid size={{ xs: 12, md: 12 }}>
+                  <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                    <Accordion sx={{ ...accordion_xs }}>
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography variant="h6">
+                          Sponsors ({sponsors.length})
+                        </Typography>
+                      </AccordionSummary>
 
-                  {billInfo.history
-                    .sort(
-                      (a, b) =>
-                        new Date(b.date).getTime() - new Date(a.date).getTime(), // Latest first
-                    )
-                    .map((history, index) => (
-                      <BillHistoryItem key={index} {...history} />
-                    ))}
-                </Paper>
-              </Grid>
-            )}
+                      <AccordionDetails>
+                        {sponsors.map((sponsor) => (
+                          <SponsorCard key={sponsor.people_id} {...sponsor} />
+                        ))}
+                      </AccordionDetails>
+                    </Accordion>
+                  </Paper>
+                </Grid>
+              )}
+
+              {/* Bill History */}
+              {history_items && (
+                <Grid size={{ xs: 12, md: 12 }}>
+                  <Paper elevation={1} sx={{ p: 2, borderRadius: 3 }}>
+                    <Accordion sx={{ ...accordion_xs }}>
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography variant="h6">
+                          Bill History ({history_items.length})
+                        </Typography>
+                      </AccordionSummary>
+
+                      <AccordionDetails>
+                        {history_items
+                          .sort(
+                            (a, b) =>
+                              new Date(b.date).getTime() -
+                              new Date(a.date).getTime(), // Latest first
+                          )
+                          .map((history, index) => (
+                            <BillHistoryItem key={index} {...history} />
+                          ))}
+                      </AccordionDetails>
+                    </Accordion>
+                  </Paper>
+                </Grid>
+              )}
+            </Box>
           </Grid>
         </Grid>
       ) : (
