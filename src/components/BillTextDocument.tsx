@@ -6,12 +6,14 @@ interface BillTextDocumentProps {
   doc_id: number;
   date: string;
   type: string;
+  title?: string;
   state_link: string;
 }
 
 const BillTextDocument: React.FC<BillTextDocumentProps> = ({
   date,
   type,
+  title,
   state_link,
 }) => {
   return (
@@ -27,10 +29,10 @@ const BillTextDocument: React.FC<BillTextDocumentProps> = ({
     >
       <Box>
         <Typography variant="body1" fontWeight="bold">
-          {type}
+          {title ? title : type}
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          {new Date(date).toLocaleDateString()}
+          {date}
         </Typography>
       </Box>
       <PdfViewer pdfUrl={state_link} label={`View ${type} PDF`} />

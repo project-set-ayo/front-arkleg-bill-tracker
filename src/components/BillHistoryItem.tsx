@@ -48,7 +48,7 @@ const BillHistoryItem: React.FC<BillHistoryItemProps> = ({
           </Typography>
         </Tooltip>
         <Typography variant="body2" color="textSecondary">
-          {new Date(date).toLocaleDateString()}
+          {date}
         </Typography>
         <Typography variant="body2" color="textSecondary">
           Chamber: {chamber === "S" ? "Senate" : "House"}
