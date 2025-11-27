@@ -7,11 +7,22 @@ const SessionBillList = ({ sessionId }: { sessionId: number }) => {
   const { bills, loading, error } = useBills(sessionId);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Function to filter bills based on search input
   const filteredBills = bills.filter((bill) => {
     const query = searchQuery.toLowerCase().trim();
-    if (!query) return true; // No filtering if searchQuery is empty
+    if (!query) return true;
 
+    // Act N Filter
+    const actMatch = query.match(/^act\s+(\d+)$/i);
+    if (actMatch) {
+      const actNumber = actMatch[1];
+      const actRegex = new RegExp(`is now\\s+act\\s+${actNumber}\\b`, "i");
+
+      return (
+        actRegex.test(bill.last_action ?? "") || actRegex.test(bill.title ?? "")
+      );
+    }
+
+    // Chamber Type Filter
     return (
       bill.number.toLowerCase().includes(query) || // Match bill number (e.g., "HB123")
       // single-letter
@@ -45,7 +56,7 @@ const SessionBillList = ({ sessionId }: { sessionId: number }) => {
       {/* Search Input */}
       <TextField
         fullWidth
-        label="Filter bills by bill number, chamber (House/Senate) or type (bill/resolution/joint resolution)"
+        label="Filter bills by bill number, chamber (House/Senate) or type (bill/resolution/joint resolution), and act number"
         variant="outlined"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
