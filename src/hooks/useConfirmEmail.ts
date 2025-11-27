@@ -23,13 +23,10 @@ const useConfirmEmail = (key: string | undefined) => {
       }
 
       try {
-        const response = await apiWithoutAuth.post(
-          "/auth/register/verify-email/",
-          { key },
-        );
+        await apiWithoutAuth.post("/auth/register/verify-email/", { key });
 
         Cookies.set("authToken", key, { expires: 7 }); // Expires in 7 days
-        console.log("success: ", response.data);
+
         setStatus(
           "Your email has been successfully verified! Proceed to login.",
         );

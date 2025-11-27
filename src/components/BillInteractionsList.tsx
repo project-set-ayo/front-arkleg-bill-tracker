@@ -30,7 +30,6 @@ const BillInteractionsList: React.FC = () => {
 
   // Pagination Logic
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
-  console.log("billInteractions:", billInteractions);
   const paginatedInteractions = billInteractions.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE,

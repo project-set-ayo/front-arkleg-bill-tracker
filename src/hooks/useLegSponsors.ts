@@ -27,8 +27,6 @@ export default function useLegSponsors(sessionId: number | null) {
         );
         setSession(response.data.session);
         setSponsors(response.data.people);
-        console.log("session: ", session);
-        console.log("sponsors: ", sponsors);
       } catch (err: any) {
         setError(err.response?.data?.error || "Failed to fetch sponsors.");
       } finally {
