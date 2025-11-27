@@ -6,4 +6,5 @@ export interface Bill {
   description: string;
   status: string;
   status_date: string;
+  last_action: string;
 }

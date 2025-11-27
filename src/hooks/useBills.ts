@@ -24,8 +24,6 @@ export default function useBills(sessionId: number | null) {
         });
         setSession(response.data.session);
         setBills(response.data.bills);
-        console.log("session: ", session);
-        console.log("bills: ", bills);
       } catch (err: any) {
         setError(err.response?.data?.error || "Failed to fetch bills.");
       } finally {

@@ -32,9 +32,6 @@ export default function useSponsoredBills(peopleId: number | null) {
         setSponsor(response.data.sponsor);
         setSessions(response.data.sessions);
         setBills(response.data.bills);
-        console.log("sponsor: ", sponsor);
-        console.log("sessions: ", sessions);
-        console.log("bills: ", bills);
       } catch (err: any) {
         setError(
           err.response?.data?.error || "Failed to fetch sponsored bills.",
