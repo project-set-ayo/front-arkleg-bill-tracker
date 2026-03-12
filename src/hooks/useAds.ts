@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { api } from "../utils/axios"; // Ensure axios instance is properly configured
+import { useEffect, useState } from "react";
 import { Ad } from "../types/ad";
+import { api } from "../utils/axios";
 
 const useAds = (style?: "square" | "horizontal" | "vertical") => {
   const [ads, setAds] = useState<Ad[]>([]);
