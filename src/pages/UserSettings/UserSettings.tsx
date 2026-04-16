@@ -7,6 +7,7 @@ import AdBanner from "../../components/AdBanner";
 import AdminAdManager from "../../components/AdminAdManager";
 import useUserProfile from "../../hooks/useUserProfile";
 import useAds from "../../hooks/useAds";
+import ControlBillInteractionsList from "../../components/ControlBillInteractionsList";
 
 const UserSettings: React.FC = () => {
   const AD_STYLE = "vertical";
@@ -15,7 +16,7 @@ const UserSettings: React.FC = () => {
   const hasAds = ads.length > 0;
 
   return (
-    <Box sx={{ p: 3, width: "100%" }}>
+    <Box sx={{ width: "100%" }}>
       <Grid container spacing={2} size={{ xs: 12 }}>
         <Grid container size={{ xs: 12, md: hasAds ? 8 : 12 }}>
           <Grid size={{ xs: 12 }}>
@@ -23,6 +24,11 @@ const UserSettings: React.FC = () => {
               <UserProfileManager />
             </Paper>
           </Grid>
+
+          <Grid size={{ xs: 12 }}>
+            <ControlBillInteractionsList />
+          </Grid>
+
           <Grid size={{ xs: 12 }}>
             <Paper elevation={1} sx={{ borderRadius: 3 }}>
               <UserKeywordManager />

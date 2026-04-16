@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Paper, Tabs, Tab, Container, useMediaQuery } from "@mui/material";
+import { Box, Paper, Tabs, Tab, useMediaQuery } from "@mui/material";
 import { Article, FindInPage, Person } from "@mui/icons-material";
 import { Theme } from "@mui/material/styles";
 import SessionList from "../../components/SessionList";
@@ -18,7 +18,7 @@ const SessionPage = () => {
   );
 
   return (
-    <Container
+    <Box
       sx={{
         mt: 2,
         minHeight: "100vh",
@@ -74,7 +74,7 @@ const SessionPage = () => {
           </Paper>
         </>
       )}
-    </Container>
+    </Box>
   );
 };
 

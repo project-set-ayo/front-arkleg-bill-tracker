@@ -6,8 +6,9 @@ interface BillInteraction {
   legiscan_bill_id: number;
   bill_number: string;
   bill_title: string;
-  stance: "support" | "oppose" | "watch"; // Assuming predefined stance options
+  stance: "support" | "oppose" | "watch";
   note: string;
+  is_archived: boolean;
 }
 
 export default function useBillInteractions() {

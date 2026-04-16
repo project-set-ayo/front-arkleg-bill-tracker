@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -10,25 +10,41 @@ import {
   Pagination,
 } from "@mui/material";
 import useBillInteractions from "../hooks/useBillInteractions";
-import { CheckCircle, Cancel, Visibility } from "@mui/icons-material";
+import { CheckCircle, Cancel, Visibility, Archive } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
-// Define colors and icons for each stance
 const stanceColors: Record<string, { color: string; icon: JSX.Element }> = {
   support: { color: "success", icon: <CheckCircle color="success" /> },
   oppose: { color: "error", icon: <Cancel color="error" /> },
   watch: { color: "warning", icon: <Visibility color="warning" /> },
 };
 
-const ITEMS_PER_PAGE = 5; // ✅ Controls number of interactions per page
+const ITEMS_PER_PAGE = 5;
 
-const BillInteractionsList: React.FC = () => {
-  const billInteractions = useBillInteractions();
+interface Props {
+  filterType?: "all" | "active" | "archived";
+  controls?: React.ReactNode;
+}
+
+const BillInteractionsList: React.FC<Props> = ({
+  filterType = "active",
+  controls,
+}) => {
+  const allInteractions = useBillInteractions();
   const [page, setPage] = useState(1);
   const HELP_TEXT =
     "You can select bills to grade and monitor through the individual bill's detail page. From Bill Search or Tracked Keywords, click on a bill number to begin.";
 
-  // Pagination Logic
+  useEffect(() => {
+    setPage(1);
+  }, [filterType]);
+
+  const billInteractions = allInteractions.filter((interaction) => {
+    if (filterType === "active") return !interaction.is_archived;
+    if (filterType === "archived") return interaction.is_archived;
+    return true;
+  });
+
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
   const paginatedInteractions = billInteractions.slice(
     startIndex,
@@ -39,12 +55,18 @@ const BillInteractionsList: React.FC = () => {
   return (
     <Box display="flex" justifyContent="center">
       <Paper elevation={1} sx={{ width: "100%", p: 3, borderRadius: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          Monitored Bills
-        </Typography>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={1}
+        >
+          <Typography variant="h5">Monitored Bills</Typography>
+          {controls && <Box>{controls}</Box>}
+        </Box>
 
         {billInteractions.length > 0 ? (
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body2" color="textSecondary" gutterBottom>
             {HELP_TEXT}
           </Typography>
         ) : null}
@@ -61,15 +83,15 @@ const BillInteractionsList: React.FC = () => {
               {paginatedInteractions.map((interaction) => (
                 <ListItem
                   component={Link}
-                  to={`bill/${interaction.legiscan_bill_id}`}
+                  to={`/bill/${interaction.legiscan_bill_id}`}
                   key={interaction.id}
                   divider
                   sx={{
-                    minHeight: 80, // Ensures each item has a fixed height
+                    minHeight: 80,
                     alignItems: "center",
+                    opacity: interaction.is_archived ? 0.8 : 1,
                   }}
                 >
-                  {/* Bill Information */}
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" fontWeight="bold">
@@ -83,7 +105,7 @@ const BillInteractionsList: React.FC = () => {
                         sx={{
                           display: "-webkit-box",
                           WebkitBoxOrient: "vertical",
-                          WebkitLineClamp: 2, // Limits bill title to n lines
+                          WebkitLineClamp: 2,
                           overflow: "hidden",
                         }}
                       >
@@ -92,27 +114,30 @@ const BillInteractionsList: React.FC = () => {
                     }
                   />
 
-                  {/* Stance Indicator */}
-                  {interaction.stance && (
-                    <Chip
-                      label={interaction.stance.toUpperCase()}
-                      color={stanceColors[interaction.stance].color as any}
-                      variant="filled"
-                      size={"small"}
-                      sx={{ fontWeight: "bold" }}
-                    />
-                  )}
+                  <Box display="flex" gap={1}>
+                    {interaction.is_archived && (
+                      <Chip label="Archived" size="small" icon={<Archive />} />
+                    )}
+                    {interaction.stance && (
+                      <Chip
+                        label={interaction.stance.toUpperCase()}
+                        color={stanceColors[interaction.stance].color as any}
+                        variant="filled"
+                        size={"small"}
+                        sx={{ fontWeight: "bold" }}
+                      />
+                    )}
+                  </Box>
                 </ListItem>
               ))}
             </List>
 
-            {/* Pagination Controls */}
             {totalPages > 1 && (
               <Box display="flex" justifyContent="center" mt={2}>
                 <Pagination
                   count={totalPages}
                   page={page}
-                  onChange={(event, value) => setPage(value)}
+                  onChange={(_, value) => setPage(value)}
                   color="primary"
                 />
               </Box>

@@ -26,7 +26,7 @@ function App() {
         sx={{ mb: (theme) => theme.spacing(2) }}
       >
         <Grid size={{ xs: 12, md: hasAds ? 9 : 12 }}>
-          <BillInteractionsList />
+          <BillInteractionsList filterType={"active"} />
         </Grid>
         {hasAds && (
           <Grid size={{ xs: 12, md: 3 }}>
